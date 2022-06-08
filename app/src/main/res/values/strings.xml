@@ -3,4 +3,7 @@
     <string name="menu_button">Меню</string>
     <string name="create_button">Создать</string>
     <string name="notes_title">Записи</string>
+    <string name="on_queue_filter">На очереди</string>
+    <string name="finished_filter">Завершено</string>
+    <string name="error_filter">Ошибка</string>
 </resources>
