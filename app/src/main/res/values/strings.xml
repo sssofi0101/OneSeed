@@ -6,4 +6,7 @@
     <string name="on_queue_filter">На очереди</string>
     <string name="finished_filter">Завершено</string>
     <string name="error_filter">Ошибка</string>
+    <string name="calculate">Рассчитать</string>
+    <string name="name_of_note">Название</string>
+    <string name="pin_location">Прикрепить местоположение</string>
 </resources>
