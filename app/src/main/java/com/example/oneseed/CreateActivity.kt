@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,14 +23,20 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         setContentView(R.layout.activity_create)
         val button: Button = findViewById(R.id.button7)
         button.setOnClickListener {
+            tvGpsLocation = findViewById(R.id.textView7)
+            tvGpsLocation.text = "Определение..."
             getLocation()
         }
     }
 
     private fun getLocation() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationPermissionCode)
+        if ((ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        ) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                locationPermissionCode)
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
     }
@@ -42,19 +47,8 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         lant = lant.take(8)
         var long = location.longitude.toString()
         long = long.take(8)
-        tvGpsLocation.text = "Ширина: $lant,\nДолгота: $long"
+        tvGpsLocation.text = "Ширина: $lant\nДолгота: $long"
+        locationManager.removeUpdates(this)
     }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == locationPermissionCode) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Разрешение получено", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                Toast.makeText(this, "D разрешении отказано", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
 
 }
