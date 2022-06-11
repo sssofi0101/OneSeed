@@ -16,18 +16,31 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/return_to_main_button"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_weight="0.1"
+            android:paddingLeft="0dp"
+            android:text="@string/back"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textColor="@color/green_light_text"
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
+            android:id="@+id/create_header_textView"
+            android:layout_width="242dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:layout_marginStart="45dp"
+            android:layout_weight="0.9"
+            android:fontFamily="@font/inter"
+            android:paddingTop="4dp"
+            android:text="@string/create"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -47,29 +60,33 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/date_and_time_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="" />
 
                 <Button
-                    android:id="@+id/button6"
+                    android:id="@+id/info_about_date_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Button" />
+                    android:text=""
+                    app:icon="@drawable/ic_help"
+                    app:iconGravity="end"
+                    app:iconTint="#0D00A8" />
 
             </LinearLayout>
 
             <EditText
-                android:id="@+id/editTextName"
+                android:id="@+id/name_editText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/name_of_note"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,14 +94,14 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button7"
+                    android:id="@+id/pin_location_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/pin_location" />
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/status_of_location_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -97,18 +114,18 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/icon_of_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/yellow_round_button" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/location_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="Местоположение:" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
