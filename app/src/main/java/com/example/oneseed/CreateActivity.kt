@@ -28,7 +28,7 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         setContentView(R.layout.activity_create)
         val button: Button = findViewById(R.id.button7)
         button.setOnClickListener {
-            tvGpsLocation = findViewById(R.id.editTextName)
+            tvGpsLocation = findViewById(R.id.textView7)
             tvGpsLocation.text = "Определение..."
             getLocation()
         }
@@ -48,20 +48,17 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         }
         catch (e: Exception){
             createSimpleDialog()
-            //Toast.makeText(this, "Необходимо разрешение", Toast.LENGTH_SHORT).show()
         }
     }
 
 
     private fun createSimpleDialog() {
         val builder = AlertDialog.Builder(this)
-        with(builder) {
-            builder.setTitle("Ошибка в определении местоположения")
-            builder.setMessage("Чтобы мы смогли точно определять Ваше местоположение, необходимо предоставить разрешение " +
-                    "на использование местоположения. Зайдите в настройки приложения " +
-                    "и разрешите доступ к местоположению")
-            builder.setPositiveButton("Понятно") { dialogInterface, i -> }
-        }
+        builder.setTitle("Ошибка в определении местоположения")
+        builder.setMessage("Чтобы мы смогли точно определять Ваше местоположение, необходимо предоставить разрешение " +
+                "на использование местоположения. Зайдите в настройки приложения " +
+                "и разрешите доступ к местоположению")
+        builder.setPositiveButton("Понятно") { _, _ -> }
 
         val alertDialog = builder.create()
         alertDialog.show()
@@ -70,26 +67,6 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         with(button) {
             setTextColor(Color.GREEN)
         }
-
-        /*val builder = AlertDialog.Builder(this)
-        with(builder) {
-            setTitle("Icon and Button Color")
-            setMessage("We have a message")
-            setPositiveButton("OK", null)
-            setNegativeButton("CANCEL", null)
-            setNeutralButton("NEUTRAL", null)
-
-        }
-        val alertDialog = builder.create()
-        alertDialog.show()
-
-        val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-        with(button) {
-            setBackgroundColor(Color.BLACK)
-            setPadding(0, 0, 20, 0)
-            setTextColor(Color.WHITE)
-        }
-    }*/
     }
 
 
@@ -101,17 +78,16 @@ class CreateActivity : AppCompatActivity() , LocationListener {
             }
             else {
                 Toast.makeText(this, "Нет доступа к местоположению", Toast.LENGTH_SHORT).show()
-                //getLocation()
             }
         }
     }
     @SuppressLint("SetTextI18n")
     override fun onLocationChanged(location: Location) {
-        tvGpsLocation = findViewById(R.id.editTextName)
+        tvGpsLocation = findViewById(R.id.textView7)
         var lant = location.latitude.toString()
-        lant = lant.take(15)
+        lant = lant.take(6)
         var long = location.longitude.toString()
-        long = long.take(15)
+        long = long.take(6)
         tvGpsLocation.text = "$lant $long"
         locationManager.removeUpdates(this)
     }
