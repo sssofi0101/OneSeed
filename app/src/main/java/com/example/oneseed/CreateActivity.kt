@@ -3,16 +3,21 @@ package com.example.oneseed
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.lang.Exception
 
 class CreateActivity : AppCompatActivity() , LocationListener {
     private lateinit var locationManager: LocationManager
@@ -23,13 +28,14 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         setContentView(R.layout.activity_create)
         val button: Button = findViewById(R.id.button7)
         button.setOnClickListener {
-            tvGpsLocation = findViewById(R.id.textView7)
+            tvGpsLocation = findViewById(R.id.editTextName)
             tvGpsLocation.text = "Определение..."
             getLocation()
         }
     }
 
     private fun getLocation() {
+        try {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if ((ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -38,16 +44,75 @@ class CreateActivity : AppCompatActivity() , LocationListener {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 locationPermissionCode)
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5f, this)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
+        }
+        catch (e: Exception){
+            createSimpleDialog()
+            //Toast.makeText(this, "Необходимо разрешение", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun createSimpleDialog() {
+        val builder = AlertDialog.Builder(this)
+        with(builder) {
+            builder.setTitle("Ошибка в определении местоположения")
+            builder.setMessage("Чтобы мы смогли точно определять Ваше местоположение, необходимо предоставить разрешение " +
+                    "на использование местоположения. Зайдите в настройки приложения " +
+                    "и разрешите доступ к местоположению")
+            builder.setPositiveButton("Понятно") { dialogInterface, i -> }
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        with(button) {
+            setTextColor(Color.GREEN)
+        }
+
+        /*val builder = AlertDialog.Builder(this)
+        with(builder) {
+            setTitle("Icon and Button Color")
+            setMessage("We have a message")
+            setPositiveButton("OK", null)
+            setNegativeButton("CANCEL", null)
+            setNeutralButton("NEUTRAL", null)
+
+        }
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        with(button) {
+            setBackgroundColor(Color.BLACK)
+            setPadding(0, 0, 20, 0)
+            setTextColor(Color.WHITE)
+        }
+    }*/
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == locationPermissionCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Разрешение получено", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(this, "Нет доступа к местоположению", Toast.LENGTH_SHORT).show()
+                //getLocation()
+            }
+        }
     }
     @SuppressLint("SetTextI18n")
     override fun onLocationChanged(location: Location) {
-        tvGpsLocation = findViewById(R.id.textView7)
+        tvGpsLocation = findViewById(R.id.editTextName)
         var lant = location.latitude.toString()
-        lant = lant.take(8)
+        lant = lant.take(15)
         var long = location.longitude.toString()
-        long = long.take(8)
-        tvGpsLocation.text = "Ширина: $lant\nДолгота: $long"
+        long = long.take(15)
+        tvGpsLocation.text = "$lant $long"
         locationManager.removeUpdates(this)
     }
 
