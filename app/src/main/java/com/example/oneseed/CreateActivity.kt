@@ -26,9 +26,17 @@ class CreateActivity : AppCompatActivity() , LocationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
-        val button: Button = findViewById(R.id.button7)
+
+        val backButton = findViewById<Button>(R.id.return_to_main_button)
+        backButton.setOnClickListener {
+            finishAndRemoveTask()
+            Thread.sleep(50)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+
+        val button: Button = findViewById(R.id.pin_location_button)
         button.setOnClickListener {
-            tvGpsLocation = findViewById(R.id.textView7)
+            tvGpsLocation = findViewById(R.id.location_textView)
             tvGpsLocation.text = "Определение..."
             getLocation()
         }
@@ -66,6 +74,7 @@ class CreateActivity : AppCompatActivity() , LocationListener {
         val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
         with(button) {
             setTextColor(Color.GREEN)
+
         }
     }
 
@@ -83,7 +92,7 @@ class CreateActivity : AppCompatActivity() , LocationListener {
     }
     @SuppressLint("SetTextI18n")
     override fun onLocationChanged(location: Location) {
-        tvGpsLocation = findViewById(R.id.textView7)
+        tvGpsLocation = findViewById(R.id.location_textView)
         var lant = location.latitude.toString()
         lant = lant.take(6)
         var long = location.longitude.toString()
