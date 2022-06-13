@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -34,12 +35,26 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
 
-            val button: Button = findViewById(R.id.pin_location_button)
-            button.setOnClickListener {
-                tvGpsLocation = findViewById(R.id.location_textView)
-                tvGpsLocation.text = "Определение..."
-                getLocation()
+
             }
+        val button: Button = findViewById(R.id.pin_location_button)
+        button.setOnClickListener {
+            tvGpsLocation = findViewById(R.id.location_textView)
+            tvGpsLocation.text = "Определение..."
+            getLocation()
+        }
+
+        val textView: TextView = findViewById(R.id.location_textView)
+        textView.setOnClickListener {
+            try {
+                val strs = textView.text.toString().split(",").toTypedArray()
+                val latitude = strs[0]
+                val longitude = strs[1]
+                val intent = Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse("https://www.google.com/maps/@$latitude,$longitude,14.15z"))
+                startActivity(intent)
+            }
+            catch (e: Exception){ }
         }
     }
 
@@ -98,10 +113,10 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     override fun onLocationChanged(location: Location) {
         tvGpsLocation = findViewById(R.id.location_textView)
         var lant = location.latitude.toString()
-        lant = lant.take(6)
+        lant = lant.take(10)
         var long = location.longitude.toString()
-        long = long.take(6)
-        tvGpsLocation.text = "$lant $long"
+        long = long.take(10)
+        tvGpsLocation.text = "$lant,$long"
         locationManager.removeUpdates(this)
     }
 
