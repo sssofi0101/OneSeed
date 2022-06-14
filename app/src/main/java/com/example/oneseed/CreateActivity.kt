@@ -24,6 +24,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
     private val locationPermissionCode = 2
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
@@ -44,14 +45,23 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             getLocation()
         }
 
+        //Открытие карт с полученными координатами при нажатии на эти координаты
         val textView: TextView = findViewById(R.id.location_textView)
         textView.setOnClickListener {
             try {
+                //Массив из координат, которые отображаются при определении
                 val strs = textView.text.toString().split(",").toTypedArray()
                 val latitude = strs[0]
                 val longitude = strs[1]
-                val intent = Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("https://www.google.com/maps/@$latitude,$longitude,14.15z"))
+                val str = "yandexmaps://maps.yandex.ru/?pt=$latitude,$longitude$&z=12&l=map"
+
+                val intent = Intent(Intent.ACTION_VIEW,
+
+                    //Для открытия гугл-карт
+                    //Uri.parse("https://www.google.com/maps/@$latitude,$longitude,14.15z"))
+                    
+                    //Для открытия яндекс-карты
+                    Uri.parse("yandexmaps://maps.yandex.ru/?pt=$longitude,$latitude&z=12&l=map"))
                 startActivity(intent)
             }
             catch (e: Exception){ }
