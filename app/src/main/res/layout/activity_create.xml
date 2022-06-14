@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_launcher_foreground" />
+                    app:srcCompat="@drawable/ic_approve" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,8 +154,8 @@
 
                 <ImageView
                     android:id="@+id/load_photo_status"
-                    android:layout_width="46dp"
-                    android:layout_height="37dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_approve" />
             </LinearLayout>
@@ -169,47 +169,44 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <com.google.android.material.chip.ChipGroup
+                    <ImageView
+                        android:id="@+id/loaded_photo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip11"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip10"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </com.google.android.material.chip.ChipGroup>
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_launcher_background" />
                 </LinearLayout>
             </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sort_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/sort"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/sort_spinner"
+                    android:layout_width="228dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/sort_choice_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_approve" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

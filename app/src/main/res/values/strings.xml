@@ -11,4 +11,5 @@
     <string name="pin_location">Прикрепить местоположение</string>
     <string name="back">Назад</string>
     <string name="load_photo">Загрузить фото</string>
+    <string name="sort">Сорт</string>
 </resources>
