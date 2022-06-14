@@ -10,4 +10,5 @@
     <string name="name_of_note">Название</string>
     <string name="pin_location">Прикрепить местоположение</string>
     <string name="back">Назад</string>
+    <string name="load_photo">Загрузить фото</string>
 </resources>
