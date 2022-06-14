@@ -33,14 +33,13 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             Thread.sleep(50)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-
-            val button: Button = findViewById(R.id.pin_location_button)
-            button.setOnClickListener {
-                tvGpsLocation = findViewById(R.id.location_textView)
-                tvGpsLocation.text = "Определение..."
-                getLocation()
             }
-        }
+        val button: Button = findViewById(R.id.pin_location_button)
+        button.setOnClickListener {
+            tvGpsLocation = findViewById(R.id.location_textView)
+            tvGpsLocation.text = "Определение..."
+            getLocation()
+            }
     }
 
     private fun getLocation() {
