@@ -49,23 +49,53 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         val textView: TextView = findViewById(R.id.location_textView)
         textView.setOnClickListener {
             try {
+
+/*
+
+                val gmmIntentUri =
+                    Uri.parse("geo:0,0?q=-33.8666,151.1957(Google+Sydney)")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+*/
+
+
                 //Массив из координат, которые отображаются при определении
                 val strs = textView.text.toString().split(",").toTypedArray()
                 val latitude = strs[0]
                 val longitude = strs[1]
-                val str = "yandexmaps://maps.yandex.ru/?pt=$latitude,$longitude$&z=12&l=map"
 
-                val intent = Intent(Intent.ACTION_VIEW,
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Выберите приложение:")
+                builder.setPositiveButton("Yandex-карты") { _, _ ->
+                    val intent = Intent(Intent.ACTION_VIEW,
+                        Uri.parse("yandexmaps://maps.yandex.ru/?pt=$longitude,$latitude&z=12&l=map"))
+                    startActivity(intent)
+                }
+                builder.setNegativeButton("Google-карты") { _, _ ->
+                    val gmmIntentUri =
+                        Uri.parse("geo:0,0?q=$latitude,$longitude(Ваше местоположением)")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+                }
 
-                    //Для открытия гугл-карт
-                    //Uri.parse("https://www.google.com/maps/@$latitude,$longitude,14.15z"))
-                    
-                    //Для открытия яндекс-карты
-                    Uri.parse("yandexmaps://maps.yandex.ru/?pt=$longitude,$latitude&z=12&l=map"))
-                startActivity(intent)
+                val alertDialog = builder.create()
+                //alertDialog.window?.decorView?.setBackgroundResource(R.drawable.ic_launcher_background)
+                alertDialog.show()
+
+                val yandexbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                with(yandexbutton) {
+                    setTextColor(Color.BLACK)
+                }
+                val googlebutton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                with(googlebutton) {
+                    setTextColor(Color.BLACK)
+                }
             }
             catch (e: Exception){ }
         }
+
     }
 
     private fun getLocation() {
@@ -80,12 +110,16 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
         } catch (e: Exception) {
-            createSimpleDialog()
+            gpsPermissionWrongAlert()
         }
     }
 
 
-    private fun createSimpleDialog() {
+
+    /**
+     * Отображение диалогового окна об ошибки при отсутствии доступа к местоположению.
+     */
+    private fun gpsPermissionWrongAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Ошибка в определении местоположения")
         builder.setMessage("Чтобы мы смогли точно определять Ваше местоположение, необходимо предоставить разрешение " +
@@ -102,6 +136,13 @@ class CreateActivity : AppCompatActivity(), LocationListener {
 
         }
     }
+
+
+
+
+
+
+
 
 
     override fun onRequestPermissionsResult(
