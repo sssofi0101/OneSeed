@@ -24,6 +24,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
     private val locationPermissionCode = 2
+
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +38,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             startActivity(intent)
 
 
-            }
+        }
         val button: Button = findViewById(R.id.pin_location_button)
         button.setOnClickListener {
             tvGpsLocation = findViewById(R.id.location_textView)
@@ -49,22 +50,12 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         val textView: TextView = findViewById(R.id.location_textView)
         textView.setOnClickListener {
             try {
-
-/*
-
-                val gmmIntentUri =
-                    Uri.parse("geo:0,0?q=-33.8666,151.1957(Google+Sydney)")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
-*/
-
-
                 //Массив из координат, которые отображаются при определении
                 val strs = textView.text.toString().split(",").toTypedArray()
                 val latitude = strs[0]
                 val longitude = strs[1]
 
+                /** Отображение диалогового окна с предложением выбора в каком приложении будут открываться карты*/
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Выберите приложение:")
                 builder.setPositiveButton("Yandex-карты") { _, _ ->
@@ -81,7 +72,6 @@ class CreateActivity : AppCompatActivity(), LocationListener {
                 }
 
                 val alertDialog = builder.create()
-                //alertDialog.window?.decorView?.setBackgroundResource(R.drawable.ic_launcher_background)
                 alertDialog.show()
 
                 val yandexbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
@@ -92,8 +82,8 @@ class CreateActivity : AppCompatActivity(), LocationListener {
                 with(googlebutton) {
                     setTextColor(Color.BLACK)
                 }
+            } catch (e: Exception) {
             }
-            catch (e: Exception){ }
         }
 
     }
@@ -113,7 +103,6 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             gpsPermissionWrongAlert()
         }
     }
-
 
 
     /**
@@ -136,13 +125,6 @@ class CreateActivity : AppCompatActivity(), LocationListener {
 
         }
     }
-
-
-
-
-
-
-
 
 
     override fun onRequestPermissionsResult(
