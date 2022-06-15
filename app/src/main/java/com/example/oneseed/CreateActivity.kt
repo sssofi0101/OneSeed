@@ -3,6 +3,7 @@ package com.example.oneseed
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -17,6 +18,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -27,12 +29,7 @@ import java.util.*
 
 
 class CreateActivity : AppCompatActivity(), LocationListener {
-
-
-    companion object {
-        const val IMAGE_REQUEST_CODE = 100
-    }
-
+    
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
     private lateinit var dateAndTimeTextView: TextView
@@ -117,14 +114,15 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     private fun pickImageGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_REQUEST_CODE)
+        resultLauncher.launch(intent)
     }
 
-    @SuppressLint("Recycle")
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100) image.setImageURI(data?.data)
+
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+             val data: Intent? = result.data
+             image.setImageURI(data?.data)
+        }
     }
 
 
