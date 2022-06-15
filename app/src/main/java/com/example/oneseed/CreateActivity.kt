@@ -29,7 +29,7 @@ import java.util.*
 
 
 class CreateActivity : AppCompatActivity(), LocationListener {
-    
+
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
     private lateinit var dateAndTimeTextView: TextView
@@ -45,9 +45,6 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         image.setImageResource(0)
 
         setTime()
-
-
-
         val backButton = findViewById<Button>(R.id.return_to_main_button)
         backButton.setOnClickListener {
             finishAndRemoveTask()
@@ -61,12 +58,12 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             tvGpsLocation = findViewById(R.id.location_textView)
             tvGpsLocation.text = "Определение..."
             getLocation()
-            }
+        }
 
         val openPhotoBtn: Button = findViewById(R.id.load_photo_button)
         openPhotoBtn.setOnClickListener {
             pickImageGallery()
-            }
+        }
 
 
         //Открытие карт с полученными координатами при нажатии на эти координаты
@@ -118,16 +115,17 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     }
 
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-             val data: Intent? = result.data
-             image.setImageURI(data?.data)
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                image.setImageURI(data?.data)
+            }
         }
-    }
 
 
     @SuppressLint("SetTextI18n")
-    private fun setTime(){
+    private fun setTime() {
         dateAndTimeTextView = findViewById(R.id.dateAndTimeTextView)
         val currentDate = Date()
         val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
