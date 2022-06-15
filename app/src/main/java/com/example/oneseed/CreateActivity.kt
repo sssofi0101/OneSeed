@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -38,6 +39,8 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     private lateinit var image: ImageView
 
     private val locationPermissionCode = 2
+
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
@@ -67,6 +70,48 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         openPhotoBtn.setOnClickListener {
             pickImageGallery()
             }
+
+
+        //Открытие карт с полученными координатами при нажатии на эти координаты
+        val textView: TextView = findViewById(R.id.location_textView)
+        textView.setOnClickListener {
+            try {
+                //Массив из координат, которые отображаются при определении
+                val strs = textView.text.toString().split(",").toTypedArray()
+                val latitude = strs[0]
+                val longitude = strs[1]
+
+                /** Отображение диалогового окна с предложением выбора в каком приложении будут открываться карты*/
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Выберите приложение:")
+                builder.setPositiveButton("Yandex-карты") { _, _ ->
+                    val intent = Intent(Intent.ACTION_VIEW,
+                        Uri.parse("yandexmaps://maps.yandex.ru/?pt=$longitude,$latitude&z=12&l=map"))
+                    startActivity(intent)
+                }
+                builder.setNegativeButton("Google-карты") { _, _ ->
+                    val gmmIntentUri =
+                        Uri.parse("geo:0,0?q=$latitude,$longitude(Ваше местоположением)")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+                }
+
+                val alertDialog = builder.create()
+                alertDialog.show()
+
+                val yandexbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                with(yandexbutton) {
+                    setTextColor(Color.BLACK)
+                }
+                val googlebutton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                with(googlebutton) {
+                    setTextColor(Color.BLACK)
+                }
+            } catch (e: Exception) {
+            }
+        }
+
     }
 
     private fun pickImageGallery() {
@@ -107,13 +152,16 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
         } catch (e: Exception) {
-            createSimpleDialog()
-
+            gpsPermissionWrongAlert()
+            gpsPermissionWrongAlert()
         }
     }
 
 
-    private fun createSimpleDialog() {
+    /**
+     * Отображение диалогового окна об ошибки при отсутствии доступа к местоположению.
+     */
+    private fun gpsPermissionWrongAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Предупреждение")
         builder.setMessage("Чтобы мы смогли точно определять Ваше местоположение, необходимо предоставить разрешение " +
@@ -151,10 +199,10 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     override fun onLocationChanged(location: Location) {
         tvGpsLocation = findViewById(R.id.location_textView)
         var lant = location.latitude.toString()
-        lant = lant.take(6)
+        lant = lant.take(10)
         var long = location.longitude.toString()
-        long = long.take(6)
-        tvGpsLocation.text = "$lant $long"
+        long = long.take(10)
+        tvGpsLocation.text = "$lant,$long"
         locationManager.removeUpdates(this)
     }
 
