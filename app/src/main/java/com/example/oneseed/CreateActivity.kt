@@ -13,20 +13,40 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class CreateActivity : AppCompatActivity(), LocationListener {
+
+
+    companion object {
+        const val IMAGE_REQUEST_CODE = 100
+    }
+
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
+    private lateinit var dateAndTimeTextView: TextView
+    private lateinit var image: ImageView
+
     private val locationPermissionCode = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
+        image = findViewById(R.id.loaded_photo)
+        image.setImageResource(0)
+
+        setTime()
+
+
 
         val backButton = findViewById<Button>(R.id.return_to_main_button)
         backButton.setOnClickListener {
@@ -36,13 +56,44 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             startActivity(intent)
         }
 
-        val button: Button = findViewById(R.id.pin_location_button)
-        button.setOnClickListener {
+        val findGpsBtn: Button = findViewById(R.id.pin_location_button)
+        findGpsBtn.setOnClickListener {
             tvGpsLocation = findViewById(R.id.location_textView)
             tvGpsLocation.text = "Определение..."
             getLocation()
             }
+
+        val openPhotoBtn: Button = findViewById(R.id.load_photo_button)
+        openPhotoBtn.setOnClickListener {
+            pickImageGallery()
+            }
     }
+
+    private fun pickImageGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_REQUEST_CODE)
+    }
+
+    @SuppressLint("Recycle")
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100) image.setImageURI(data?.data)
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun setTime(){
+        dateAndTimeTextView = findViewById(R.id.dateAndTimeTextView)
+        val currentDate = Date()
+        val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val dateText: String = dateFormat.format(currentDate)
+        val timeFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val timeText: String = timeFormat.format(currentDate)
+        dateAndTimeTextView.text = "$dateText\n$timeText"
+    }
+
 
     private fun getLocation() {
         try {
@@ -57,13 +108,14 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
         } catch (e: Exception) {
             createSimpleDialog()
+
         }
     }
 
 
     private fun createSimpleDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Ошибка в определении местоположения")
+        builder.setTitle("Предупреждение")
         builder.setMessage("Чтобы мы смогли точно определять Ваше местоположение, необходимо предоставить разрешение " +
                 "на использование местоположения. Зайдите в настройки приложения " +
                 "и разрешите доступ к местоположению")

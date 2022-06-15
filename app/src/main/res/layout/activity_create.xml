@@ -60,7 +60,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/date_and_time_textView"
+                    android:id="@+id/dateAndTimeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -168,12 +168,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
-
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="15dp">
                     <ImageView
+
                         android:id="@+id/loaded_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
                         app:srcCompat="@drawable/ic_launcher_background" />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
             </ScrollView>
 
