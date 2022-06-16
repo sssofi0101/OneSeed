@@ -12,4 +12,8 @@
     <string name="back">Назад</string>
     <string name="load_photo">Загрузить фото</string>
     <string name="sort">Сорт</string>
+    <string name="comment">Комментарий</string>
+    <string name="add">Добавить</string>
+    <string name="yield">Урожайность</string>
+    <string name="product_count">Единиц продукта</string>
 </resources>
