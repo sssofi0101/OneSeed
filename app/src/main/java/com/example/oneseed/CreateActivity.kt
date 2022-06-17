@@ -45,6 +45,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         image.setImageResource(0)
 
         setTime()
+        /** Функциональная часть кнопки "назад"*/
         val backButton = findViewById<Button>(R.id.return_to_main_button)
         backButton.setOnClickListener {
             finishAndRemoveTask()
@@ -53,6 +54,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             startActivity(intent)
         }
 
+        /** Функциональная часть кнопки "прикрепить местоположение"*/
         val findGpsBtn: Button = findViewById(R.id.pin_location_button)
         findGpsBtn.setOnClickListener {
             tvGpsLocation = findViewById(R.id.location_textView)
@@ -60,13 +62,14 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             getLocation()
         }
 
+        /** Функциональная часть кнопки "Выбрать фотографию"*/
         val openPhotoBtn: Button = findViewById(R.id.load_photo_button)
         openPhotoBtn.setOnClickListener {
             pickImageGallery()
         }
 
 
-        //Открытие карт с полученными координатами при нажатии на эти координаты
+        /**Открытие карт с полученными координатами при нажатии на эти координаты*/
         val textView: TextView = findViewById(R.id.location_textView)
         textView.setOnClickListener {
             try {
@@ -108,6 +111,10 @@ class CreateActivity : AppCompatActivity(), LocationListener {
 
     }
 
+
+    /**
+     * Функция которая реализует выбор однй фотографии из галереи
+     * */
     private fun pickImageGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -115,6 +122,10 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     }
 
 
+    /**
+     * Переменная которая содержит в себе результат взаимодействия при открытии фотографии из
+     * функции pickImageGallery
+     * */
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -124,6 +135,9 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         }
 
 
+    /**
+     * Функция для определения времени в данный момент
+     * */
     @SuppressLint("SetTextI18n")
     private fun setTime() {
         dateAndTimeTextView = findViewById(R.id.dateAndTimeTextView)
@@ -136,6 +150,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     }
 
 
+    /**Функция для определения геопозиции пользователя*/
     private fun getLocation() {
         try {
             locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -148,7 +163,6 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
         } catch (e: Exception) {
-            gpsPermissionWrongAlert()
             gpsPermissionWrongAlert()
         }
     }
@@ -175,7 +189,9 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         }
     }
 
-
+    /**
+     * Запрос разрешения на доступ к геолокации
+     * */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -191,6 +207,10 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         }
     }
 
+
+    /**
+     * Функция которая определяет геопозицию в конкретный момент времени
+     * */
     @SuppressLint("SetTextI18n")
     override fun onLocationChanged(location: Location) {
         tvGpsLocation = findViewById(R.id.location_textView)
