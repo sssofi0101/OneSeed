@@ -14,37 +14,47 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
+import br.com.onimur.handlepathoz.model.PathOz
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import br.com.onimur.handlepathoz.HandlePathOz
+import br.com.onimur.handlepathoz.HandlePathOzListener.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CreateActivity : AppCompatActivity(), LocationListener {
+class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
     private lateinit var gpsUserOwn: EditText
     private lateinit var dateAndTimeTextView: TextView
     private lateinit var image: ImageView
+    private lateinit var handlePathOz: HandlePathOz
 
+
+    private var photoAddress: Uri? = null
     private val locationPermissionCode = 2
 
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        var statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
+        handlePathOz = HandlePathOz(this, this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
         image = findViewById(R.id.loaded_photo)
         tvGpsLocation = findViewById(R.id.location_textView)
         gpsUserOwn = findViewById(R.id.userOwnGps)
         image.setImageResource(0)
-
+        hideMarks()
         setTime()
         /** Функциональная часть кнопки "назад"*/
         val backButton = findViewById<Button>(R.id.return_to_main_button)
@@ -55,18 +65,41 @@ class CreateActivity : AppCompatActivity(), LocationListener {
             startActivity(intent)
         }
 
+        /** Функциональная часть кнопки "Добавить"*/
+        val addBtn = findViewById<Button>(R.id.add_button)
+        addBtn.setOnClickListener {
+
+        }
+        gpsUserOwn.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (gpsUserOwn.text.toString() != ""){
+                    statusOfLocation.visibility = View.VISIBLE
+                }
+                else {
+                    statusOfLocation.visibility = View.INVISIBLE
+
+                }
+            }
+        })
         /** Функциональная часть кнопки "прикрепить местоположение"*/
         val findGpsBtn: Button = findViewById(R.id.pin_location_button)
         findGpsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setPositiveButton("Автоматически") { _, _ ->
+                statusOfLocation = findViewById(R.id.status_of_location_imageView)
+                statusOfLocation.visibility = View.VISIBLE
                 gpsUserOwn.visibility = View.GONE
                 tvGpsLocation.visibility = View.VISIBLE
                 getLocation()
+
             }
             builder.setNeutralButton("Вручную") { _, _ ->
                 gpsUserOwn.visibility = View.VISIBLE
                 tvGpsLocation.visibility = View.GONE
+                statusOfLocation = findViewById(R.id.status_of_location_imageView)
+                statusOfLocation.visibility = View.INVISIBLE
             }
             val alertDialog = builder.create()
             alertDialog.show()
@@ -131,6 +164,17 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     }
 
 
+
+    private fun hideMarks(){
+        val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
+        val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
+        val sortChoiceStatus = findViewById<ImageView>(R.id.sort_choice_status)
+        val commentStatus = findViewById<ImageView>(R.id.comment_status)
+        loadPhotoStatus.visibility = View.INVISIBLE
+        statusOfLocation.visibility = View.INVISIBLE
+        sortChoiceStatus.visibility = View.INVISIBLE
+        commentStatus.visibility = View.INVISIBLE
+    }
     /**
      * Функция которая реализует выбор однй фотографии из галереи
      * */
@@ -138,6 +182,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         resultLauncher.launch(intent)
+
     }
 
 
@@ -151,7 +196,16 @@ class CreateActivity : AppCompatActivity(), LocationListener {
 
                 val data: Intent? = result.data
                 image.setImageURI(data?.data)
+                if (data != null) {
+                    if (data.data != null){
+                        photoAddress = data.data!!
+                        val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
+                        loadPhotoStatus.visibility = View.VISIBLE
+
+                    }
+                }
             }
+            photoAddress?.let { handlePathOz.getRealPath(it) }
         }
 
 
@@ -187,6 +241,8 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         } catch (e: Exception) {
             gpsPermissionWrongAlert()
             tvGpsLocation.text = "Ошибка определния местоположения"
+            val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
+            statusOfLocation.visibility = View.INVISIBLE
         }
     }
 
@@ -241,7 +297,18 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         var long = location.longitude.toString()
         long = long.take(10)
         tvGpsLocation.text = "$lant,$long"
+        val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
+        statusOfLocation.visibility = View.VISIBLE
         locationManager.removeUpdates(this)
+    }
+
+
+    /**Необходимо чтобы перевести Context Uri в прямой путь к файлу*/
+    override fun onRequestHandlePathOz(pathOz: PathOz, tr: Throwable?) {
+        photoAddress = Uri.parse(pathOz.path)
+        tr?.let {
+            Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
