@@ -47,6 +47,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         var statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
+
         handlePathOz = HandlePathOz(this, this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
@@ -68,6 +69,16 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         /** Функциональная часть кнопки "Добавить"*/
         val addBtn = findViewById<Button>(R.id.add_button)
         addBtn.setOnClickListener {
+            val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
+            val sortChoiceStatus = findViewById<ImageView>(R.id.sort_choice_status)
+            if( loadPhotoStatus.visibility == View.INVISIBLE
+                || statusOfLocation.visibility == View.INVISIBLE
+                ||sortChoiceStatus.visibility == View.INVISIBLE) {
+                    Toast.makeText(this, "Ошибка. Необходимо заполнить " +
+                            "все обязательные поля", Toast.LENGTH_SHORT).show()
+                }
+
+
 
         }
         gpsUserOwn.addTextChangedListener(object : TextWatcher {
