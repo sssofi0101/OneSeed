@@ -17,4 +17,5 @@
     <string name="yield">Урожайность</string>
     <string name="product_count">Единиц продукта</string>
     <string name="coordinates">Адрес/Местоположение/Координаты</string>
+    <string name="seeds_overall_count">Количество семян, общее</string>
 </resources>
