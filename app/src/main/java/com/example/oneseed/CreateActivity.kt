@@ -40,7 +40,6 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
     private lateinit var image: ImageView
     private lateinit var handlePathOz: HandlePathOz
 
-
     private var photoAddress: Uri? = null
     private val locationPermissionCode = 2
 
@@ -55,29 +54,26 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         tvGpsLocation = findViewById(R.id.location_textView)
         gpsUserOwn = findViewById(R.id.userOwnGps)
         image.setImageResource(0)
-        hideMarks()
         setTime()
         /** Функциональная часть кнопки "назад"*/
         val backButton = findViewById<Button>(R.id.return_to_main_button)
         backButton.setOnClickListener {
-            finishAndRemoveTask()
-            Thread.sleep(50)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            backMainApp()
         }
 
         /** Функциональная часть кнопки "Добавить"*/
         val addBtn = findViewById<Button>(R.id.add_button)
         addBtn.setOnClickListener {
             val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
-            val sortChoiceStatus = findViewById<ImageView>(R.id.sort_choice_status)
             if( loadPhotoStatus.visibility == View.INVISIBLE
-                || statusOfLocation.visibility == View.INVISIBLE
-                ||sortChoiceStatus.visibility == View.INVISIBLE) {
+                || statusOfLocation.visibility == View.INVISIBLE) {
                     Toast.makeText(this, "Ошибка. Необходимо заполнить " +
                             "все обязательные поля", Toast.LENGTH_SHORT).show()
                 }
-
+            else{
+                Toast.makeText(this, "Успешно добавлено!", Toast.LENGTH_SHORT).show()
+                backMainApp()
+            }
 
 
         }
@@ -90,17 +86,16 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
                 }
                 else {
                     statusOfLocation.visibility = View.INVISIBLE
-
                 }
             }
         })
+
+
         /** Функциональная часть кнопки "прикрепить местоположение"*/
         val findGpsBtn: Button = findViewById(R.id.pin_location_button)
         findGpsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setPositiveButton("Автоматически") { _, _ ->
-                statusOfLocation = findViewById(R.id.status_of_location_imageView)
-                statusOfLocation.visibility = View.VISIBLE
                 gpsUserOwn.visibility = View.GONE
                 tvGpsLocation.visibility = View.VISIBLE
                 getLocation()
@@ -123,7 +118,22 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
             with(userBtn) {
                 setTextColor(Color.BLACK)
             }
+
+
+
         }
+
+        val spinner: Spinner = findViewById(R.id.sort_spinner)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.Sorts,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+
 
         /** Функциональная часть кнопки "Выбрать фотографию"*/
         val openPhotoBtn: Button = findViewById(R.id.load_photo_button)
@@ -174,18 +184,13 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
     }
 
-
-
-    private fun hideMarks(){
-        val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
-        val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
-        val sortChoiceStatus = findViewById<ImageView>(R.id.sort_choice_status)
-        val commentStatus = findViewById<ImageView>(R.id.comment_status)
-        loadPhotoStatus.visibility = View.INVISIBLE
-        statusOfLocation.visibility = View.INVISIBLE
-        sortChoiceStatus.visibility = View.INVISIBLE
-        commentStatus.visibility = View.INVISIBLE
+    private fun backMainApp(){
+        finishAndRemoveTask()
+        Thread.sleep(50)
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
+
     /**
      * Функция которая реализует выбор однй фотографии из галереи
      * */
@@ -302,14 +307,14 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
      * */
     @SuppressLint("SetTextI18n")
     override fun onLocationChanged(location: Location) {
+        val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
         tvGpsLocation = findViewById(R.id.location_textView)
         var lant = location.latitude.toString()
         lant = lant.take(10)
         var long = location.longitude.toString()
         long = long.take(10)
-        tvGpsLocation.text = "$lant,$long"
-        val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
         statusOfLocation.visibility = View.VISIBLE
+        tvGpsLocation.text = "$lant,$long"
         locationManager.removeUpdates(this)
     }
 

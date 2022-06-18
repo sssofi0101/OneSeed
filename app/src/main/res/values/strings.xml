@@ -10,7 +10,7 @@
     <string name="pin_location">Прикрепить местоположение*</string>
     <string name="back">Назад</string>
     <string name="load_photo">Выбрать фото*</string>
-    <string name="sort">Сорт*</string>
+    <string name="sort">Сорт</string>
     <string name="comment">Комментарий</string>
     <string name="add">Добавить</string>
     <string name="yield">Урожайность</string>
@@ -18,4 +18,11 @@
     <string name="coordinates">Адрес/Местоположение/Координаты</string>
     <string name="seeds_overall_count">Количество семян, общее</string>
     <string name="create">Создать</string>
+
+    <string-array name="Sorts">
+        <item>Обыкновенный</item>
+        <item>Обыкновенный</item>
+        <item>Обыкновенный</item>
+    </string-array>
+
 </resources>
