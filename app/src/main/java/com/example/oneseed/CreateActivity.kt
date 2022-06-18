@@ -14,10 +14,8 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +30,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private lateinit var tvGpsLocation: TextView
+    private lateinit var gpsUserOwn: EditText
     private lateinit var dateAndTimeTextView: TextView
     private lateinit var image: ImageView
 
@@ -42,6 +41,8 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
         image = findViewById(R.id.loaded_photo)
+        tvGpsLocation = findViewById(R.id.location_textView)
+        gpsUserOwn = findViewById(R.id.userOwnGps)
         image.setImageResource(0)
 
         setTime()
@@ -59,9 +60,14 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         findGpsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setPositiveButton("Автоматически") { _, _ ->
+                gpsUserOwn.visibility = View.GONE
+                tvGpsLocation.visibility = View.VISIBLE
                 getLocation()
             }
-            builder.setNeutralButton("Вручную") { _, _ -> }
+            builder.setNeutralButton("Вручную") { _, _ ->
+                gpsUserOwn.visibility = View.VISIBLE
+                tvGpsLocation.visibility = View.GONE
+            }
             val alertDialog = builder.create()
             alertDialog.show()
 
