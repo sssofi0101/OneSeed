@@ -57,9 +57,22 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         /** Функциональная часть кнопки "прикрепить местоположение"*/
         val findGpsBtn: Button = findViewById(R.id.pin_location_button)
         findGpsBtn.setOnClickListener {
-            tvGpsLocation = findViewById(R.id.location_textView)
-            tvGpsLocation.text = "Определение..."
-            getLocation()
+            val builder = AlertDialog.Builder(this)
+            builder.setPositiveButton("Автоматически") { _, _ ->
+                getLocation()
+            }
+            builder.setNeutralButton("Вручную") { _, _ -> }
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+            val autoBtn = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            with(autoBtn) {
+                setTextColor(Color.BLACK)
+            }
+            val userBtn = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
+            with(userBtn) {
+                setTextColor(Color.BLACK)
+            }
         }
 
         /** Функциональная часть кнопки "Выбрать фотографию"*/
@@ -86,7 +99,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
                         Uri.parse("yandexmaps://maps.yandex.ru/?pt=$longitude,$latitude&z=12&l=map"))
                     startActivity(intent)
                 }
-                builder.setNegativeButton("Google-карты") { _, _ ->
+                builder.setNeutralButton("Google-карты") { _, _ ->
                     val gmmIntentUri =
                         Uri.parse("geo:0,0?q=$latitude,$longitude(Ваше местоположением)")
                     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -101,7 +114,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
                 with(yandexbutton) {
                     setTextColor(Color.BLACK)
                 }
-                val googlebutton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                val googlebutton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL)
                 with(googlebutton) {
                     setTextColor(Color.BLACK)
                 }
@@ -129,6 +142,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+
                 val data: Intent? = result.data
                 image.setImageURI(data?.data)
             }
@@ -161,6 +175,8 @@ class CreateActivity : AppCompatActivity(), LocationListener {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     locationPermissionCode)
             }
+            tvGpsLocation = findViewById(R.id.location_textView)
+            tvGpsLocation.text = "Определение..."
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
         } catch (e: Exception) {
             gpsPermissionWrongAlert()
@@ -185,7 +201,6 @@ class CreateActivity : AppCompatActivity(), LocationListener {
         val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
         with(button) {
             setTextColor(Color.GREEN)
-
         }
     }
 
