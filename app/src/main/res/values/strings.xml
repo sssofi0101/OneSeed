@@ -16,5 +16,5 @@
     <string name="add">Добавить</string>
     <string name="yield">Урожайность</string>
     <string name="product_count">Единиц продукта</string>
-    <string name="coordinates">Местоположение</string>
+    <string name="coordinates">Адрес/Местоположение/Координаты</string>
 </resources>

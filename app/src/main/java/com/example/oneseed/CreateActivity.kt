@@ -172,6 +172,7 @@ class CreateActivity : AppCompatActivity(), LocationListener {
 
     /**Функция для определения геопозиции пользователя*/
     private fun getLocation() {
+        tvGpsLocation = findViewById(R.id.location_textView)
         try {
             locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if ((ContextCompat.checkSelfPermission(this,
@@ -181,11 +182,11 @@ class CreateActivity : AppCompatActivity(), LocationListener {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     locationPermissionCode)
             }
-            tvGpsLocation = findViewById(R.id.location_textView)
             tvGpsLocation.text = "Определение..."
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1f, this)
         } catch (e: Exception) {
             gpsPermissionWrongAlert()
+            tvGpsLocation.text = "Ошибка определния местоположения"
         }
     }
 
