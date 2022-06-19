@@ -65,6 +65,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         val addBtn = findViewById<Button>(R.id.add_button)
         addBtn.setOnClickListener {
             val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
+            statusOfLocation = findViewById(R.id.status_of_location_imageView)
             if( loadPhotoStatus.visibility == View.INVISIBLE
                 || statusOfLocation.visibility == View.INVISIBLE) {
                     Toast.makeText(this, "Ошибка. Необходимо заполнить " +
