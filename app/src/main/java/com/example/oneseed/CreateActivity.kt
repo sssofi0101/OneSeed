@@ -82,11 +82,11 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
                     val nameEditText = findViewById<EditText>(R.id.name_editText)
                     if (gpsUserOwn.visibility == View.VISIBLE){
                         myDbManager.insertToDB(nameEditText.text.toString(), gpsUserOwn.text.toString(), photoAddress.toString(),
-                            varietiesSpinner.getSelectedItem().toString(),commentEditText.text.toString(),0,0f)
+                            varietiesSpinner.selectedItem.toString(),commentEditText.text.toString(),0,0f)
                     }
                     else{
                         myDbManager.insertToDB(nameEditText.text.toString(), tvGpsLocation.text.toString(), photoAddress.toString(),
-                            varietiesSpinner.getSelectedItem().toString(),commentEditText.text.toString(),0,0f)
+                            varietiesSpinner.selectedItem.toString(),commentEditText.text.toString(),0,0f)
                     }
 
 

@@ -5,10 +5,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 
-class MyDbManager(val context: Context) {
+class MyDbManager(context: Context) {
 
-    val myDbHelper = MyDbHelper(context)
-    var db: SQLiteDatabase? = null
+    private val myDbHelper = MyDbHelper(context)
+    private var db: SQLiteDatabase? = null
 
     fun openDB(){
         db = myDbHelper.writableDatabase
