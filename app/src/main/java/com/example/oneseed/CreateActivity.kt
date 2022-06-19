@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import br.com.onimur.handlepathoz.HandlePathOz
 import br.com.onimur.handlepathoz.HandlePathOzListener.*
+import com.example.oneseed.database.MyDbManager
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,6 +40,8 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
     private lateinit var dateAndTimeTextView: TextView
     private lateinit var image: ImageView
     private lateinit var handlePathOz: HandlePathOz
+    private val myDbManager = MyDbManager(this)
+
 
     private var photoAddress: Uri? = null
     private val locationPermissionCode = 2
@@ -72,8 +75,34 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
                             "все обязательные поля", Toast.LENGTH_SHORT).show()
                 }
             else{
-                Toast.makeText(this, "Успешно добавлено!", Toast.LENGTH_SHORT).show()
-                backMainApp()
+                try {
+                    myDbManager.openDB()
+                    val commentEditText = findViewById<EditText>(R.id.comment_editText)
+                    val varietiesSpinner = findViewById<Spinner>(R.id.varietiesSpinner)
+                    val nameEditText = findViewById<EditText>(R.id.name_editText)
+                    if (gpsUserOwn.visibility == View.VISIBLE){
+                        myDbManager.insertToDB(nameEditText.text.toString(), gpsUserOwn.text.toString(), photoAddress.toString(),
+                            varietiesSpinner.getSelectedItem().toString(),commentEditText.text.toString(),0,0f)
+                    }
+                    else{
+                        myDbManager.insertToDB(nameEditText.text.toString(), tvGpsLocation.text.toString(), photoAddress.toString(),
+                            varietiesSpinner.getSelectedItem().toString(),commentEditText.text.toString(),0,0f)
+                    }
+
+
+                    Toast.makeText(this, "Успешно добавлено!", Toast.LENGTH_SHORT).show()
+
+                    val dataList = myDbManager.readDBData()
+                    for (item in dataList){
+                        Toast.makeText(this, item, Toast.LENGTH_SHORT).show()
+                    }
+
+
+                    myDbManager.closeDB()
+                    backMainApp()
+
+                }
+                catch (e: Exception){ }
             }
 
 
@@ -124,10 +153,10 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
         }
 
-        val spinner: Spinner = findViewById(R.id.sort_spinner)
+        val spinner: Spinner = findViewById(R.id.varietiesSpinner)
         ArrayAdapter.createFromResource(
             this,
-            R.array.Sorts,
+            R.array.Varieties,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -182,6 +211,9 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
             } catch (e: Exception) {
             }
         }
+
+
+
 
     }
 
@@ -328,4 +360,34 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         }
     }
 
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+/*CREATE TABLE "OneSeedAddDB" (
+	"id"	INTEGER UNIQUE,
+	"name"	TEXT,
+	"coordinates"	TEXT,
+	"photo"	TEXT,
+	"varieties"	TEXT,
+	"comment"	TEXT,
+	"isLoaded"	INTEGER,
+	"result"	REAL,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);*/
+
+
+
+/*INSERT INTO "OneSeedAddDB" ("name", "coordinates", "photo", "varieties", "comment", "isLoaded", "result")
+VALUES("123","123","123","123","123","123","123")*/
