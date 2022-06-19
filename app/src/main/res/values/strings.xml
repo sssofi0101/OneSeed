@@ -19,7 +19,7 @@
     <string name="seeds_overall_count">Количество семян, общее</string>
     <string name="create">Создать</string>
 
-    <string-array name="Sorts">
+    <string-array name="Varieties">
         <item>Обыкновенный</item>
         <item>Обыкновенный</item>
         <item>Обыкновенный</item>
