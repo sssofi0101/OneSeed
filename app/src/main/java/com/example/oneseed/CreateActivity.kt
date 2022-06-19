@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import br.com.onimur.handlepathoz.model.PathOz
@@ -58,6 +59,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         gpsUserOwn = findViewById(R.id.userOwnGps)
         image.setImageResource(0)
         setTime()
+
         /** Функциональная часть кнопки "назад"*/
         val backButton = findViewById<Button>(R.id.return_to_main_button)
         backButton.setOnClickListener {
@@ -225,7 +227,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
     }
 
     /**
-     * Функция которая реализует выбор однй фотографии из галереи
+     * Функция которая реализует выбор одной фотографии из галереи
      * */
     private fun pickImageGallery() {
         val intent = Intent(Intent.ACTION_PICK)

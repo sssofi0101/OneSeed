@@ -18,6 +18,8 @@
     <string name="coordinates">Адрес/Местоположение/Координаты</string>
     <string name="seeds_overall_count">Количество семян, общее</string>
     <string name="create">Создать</string>
+    <string name="seeds_in_one">Количество семян, на единицу</string>
+    <string name="approximation">Погрешность</string>
 
     <string-array name="Varieties">
         <item>Обыкновенный</item>

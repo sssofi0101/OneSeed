@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey">#F6F6F6</color>
     <color name="calculation_back_grey">#ECECEC</color>
+    <color name="grey_button">#777777</color>
 </resources>
