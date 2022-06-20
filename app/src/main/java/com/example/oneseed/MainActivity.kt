@@ -16,6 +16,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.oneseed.database.MyDbManager
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
@@ -29,11 +31,18 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        /** Функциональная часть кнопки "Создать"*/
         this.findViewById<Button>(R.id.create_button_main).setOnClickListener {
 
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
+
+        /** Функциональная часть кнопки "Рассчитать"*/
         this.findViewById<Button>(R.id.calculate_button).setOnClickListener {
             try{
             if (isOnline(this)) {

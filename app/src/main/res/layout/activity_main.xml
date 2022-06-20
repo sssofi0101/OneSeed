@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,46 +127,57 @@
                 android:layout_height="514dp">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/recyclerview_item">
 
                 </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/calculate_button"
                     android:layout_width="201dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
                     android:layout_marginBottom="11dp"
                     android:backgroundTint="@color/green_buttons"
                     android:fontFamily="@font/inter"
+                    android:gravity="center"
                     android:text="@string/calculate"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:cornerRadius="100dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:cornerRadius="100dp" />
 
                 <ImageButton
                     android:id="@+id/imageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="14dp"
                     android:background="@color/white"
                     android:minWidth="48dp"
                     android:minHeight="48dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.488"
-                    app:layout_constraintStart_toEndOf="@+id/calculate_button"
                     app:srcCompat="@drawable/ic_update" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
+
+
+
 </LinearLayout>
