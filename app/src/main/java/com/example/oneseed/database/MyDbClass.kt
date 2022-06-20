@@ -24,4 +24,6 @@ object MyDbClass {
             "$COLUMN_NAME_COMMENT TEXT," +
             "$COLUMN_NAME_LOADED INTEGER," +
             "$COLUMN_NAME_RESULT REAL)"
+
+    const val DropTable = "DROP TABLE IF EXISTS $TABLE_NAME"
 }

@@ -12,4 +12,7 @@ class MyDbHelper(context : Context) : SQLiteOpenHelper(context, MyDbClass.DATABA
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         TODO("Not yet implemented")
     }
+    fun onDrop(db: SQLiteDatabase?){
+        db?.execSQL(MyDbClass.DropTable)
+    }
 }

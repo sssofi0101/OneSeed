@@ -16,17 +16,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.*
-import br.com.onimur.handlepathoz.model.PathOz
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import br.com.onimur.handlepathoz.HandlePathOz
-import br.com.onimur.handlepathoz.HandlePathOzListener.*
+import br.com.onimur.handlepathoz.HandlePathOzListener.SingleUri
+import br.com.onimur.handlepathoz.model.PathOz
 import com.example.oneseed.database.MyDbManager
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -71,40 +70,46 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         addBtn.setOnClickListener {
             val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
             statusOfLocation = findViewById(R.id.status_of_location_imageView)
-            if( loadPhotoStatus.visibility == View.INVISIBLE
-                || statusOfLocation.visibility == View.INVISIBLE) {
-                    Toast.makeText(this, "Ошибка. Необходимо заполнить " +
-                            "все обязательные поля", Toast.LENGTH_SHORT).show()
-                }
-            else{
+            if (loadPhotoStatus.visibility == View.INVISIBLE
+                || statusOfLocation.visibility == View.INVISIBLE
+            ) {
+                Toast.makeText(this, "Ошибка. Необходимо заполнить " +
+                        "все обязательные поля", Toast.LENGTH_SHORT).show()
+            } else {
                 try {
                     myDbManager.openDB()
+
                     val commentEditText = findViewById<EditText>(R.id.comment_editText)
                     val varietiesSpinner = findViewById<Spinner>(R.id.varietiesSpinner)
                     val nameEditText = findViewById<EditText>(R.id.name_editText)
-                    if (gpsUserOwn.visibility == View.VISIBLE){
-                        myDbManager.insertToDB(nameEditText.text.toString(), gpsUserOwn.text.toString(), photoAddress.toString(),
-                            varietiesSpinner.selectedItem.toString(),commentEditText.text.toString(),0,0f)
-                    }
-                    else{
-                        myDbManager.insertToDB(nameEditText.text.toString(), tvGpsLocation.text.toString(), photoAddress.toString(),
-                            varietiesSpinner.selectedItem.toString(),commentEditText.text.toString(),0,0f)
+                    if (gpsUserOwn.visibility == View.VISIBLE) {
+                        myDbManager.insertToDB(nameEditText.text.toString(),
+                            gpsUserOwn.text.toString(),
+                            photoAddress.toString(),
+                            varietiesSpinner.selectedItem.toString(),
+                            commentEditText.text.toString(),
+                            0,
+                            0f)
+                    } else {
+                        myDbManager.insertToDB(nameEditText.text.toString(),
+                            tvGpsLocation.text.toString(),
+                            photoAddress.toString(),
+                            varietiesSpinner.selectedItem.toString(),
+                            commentEditText.text.toString(),
+                            0,
+                            0f)
                     }
 
 
                     Toast.makeText(this, "Успешно добавлено!", Toast.LENGTH_SHORT).show()
 
-                    val dataList = myDbManager.readDBData()
-                    for (item in dataList){
-                        Toast.makeText(this, item, Toast.LENGTH_SHORT).show()
-                    }
 
 
                     myDbManager.closeDB()
                     backMainApp()
 
+                } catch (e: Exception) {
                 }
-                catch (e: Exception){ }
             }
 
 
@@ -113,10 +118,9 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (gpsUserOwn.text.toString() != ""){
+                if (gpsUserOwn.text.toString() != "") {
                     statusOfLocation.visibility = View.VISIBLE
-                }
-                else {
+                } else {
                     statusOfLocation.visibility = View.INVISIBLE
                 }
             }
@@ -152,7 +156,6 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
             }
 
 
-
         }
 
         val spinner: Spinner = findViewById(R.id.varietiesSpinner)
@@ -164,7 +167,6 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
-
 
 
         /** Функциональная часть кнопки "Выбрать фотографию"*/
@@ -215,11 +217,9 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         }
 
 
-
-
     }
 
-    private fun backMainApp(){
+    private fun backMainApp() {
         finishAndRemoveTask()
         Thread.sleep(50)
         val intent = Intent(this, MainActivity::class.java)
@@ -248,7 +248,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
                 val data: Intent? = result.data
                 image.setImageURI(data?.data)
                 if (data != null) {
-                    if (data.data != null){
+                    if (data.data != null) {
                         photoAddress = data.data!!
                         val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
                         loadPhotoStatus.visibility = View.VISIBLE
@@ -362,34 +362,4 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         }
     }
 
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-/*CREATE TABLE "OneSeedAddDB" (
-	"id"	INTEGER UNIQUE,
-	"name"	TEXT,
-	"coordinates"	TEXT,
-	"photo"	TEXT,
-	"varieties"	TEXT,
-	"comment"	TEXT,
-	"isLoaded"	INTEGER,
-	"result"	REAL,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);*/
-
-
-
-/*INSERT INTO "OneSeedAddDB" ("name", "coordinates", "photo", "varieties", "comment", "isLoaded", "result")
-VALUES("123","123","123","123","123","123","123")*/

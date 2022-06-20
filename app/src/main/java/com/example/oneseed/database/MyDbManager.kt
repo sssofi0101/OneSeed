@@ -27,11 +27,11 @@ class MyDbManager(context: Context) {
         db?.insert(MyDbClass.TABLE_NAME, null, values)
     }
     @SuppressLint("Range")
-    fun readDBData(): ArrayList<String>{
+    fun readDBDataPhotoUriText(): ArrayList<String>{
         val dataList = ArrayList<String>()
         val cursor = db?.query(MyDbClass.TABLE_NAME, null, null,null,null,null,null)
             while (cursor?.moveToNext()!!){
-                val dataText = cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_NAME))
+                val dataText = cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_PHOTO))
                 dataList.add(dataText)
             }
 
@@ -40,5 +40,15 @@ class MyDbManager(context: Context) {
     }
     fun closeDB(){
         myDbHelper.close()
+    }
+
+    fun createDB(){
+        myDbHelper.onCreate(db)
+
+    }
+
+    fun dropDB(){
+        myDbHelper.onDrop(db)
+
     }
 }
