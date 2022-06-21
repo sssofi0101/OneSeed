@@ -8,7 +8,7 @@ import com.example.oneseed.databinding.RecordsItemBinding
 
 class RecordAdapter:RecyclerView.Adapter<RecordAdapter.RecordHolder>() {
 
-    val recordsList = ArrayList<Record>()
+    var recordsList = ArrayList<Record>()
     class RecordHolder(itemView:View):RecyclerView.ViewHolder(itemView) {
         val binding = RecordsItemBinding.bind(itemView)
         fun bind(record: Record) = with(binding){

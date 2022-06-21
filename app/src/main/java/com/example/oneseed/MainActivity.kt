@@ -28,15 +28,14 @@ class MainActivity : AppCompatActivity() {
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
     private lateinit var binding: ActivityMainBinding
+    val rcAdapter = RecordAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val recyclerView: RecyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        initRecyclerView()
 
         /** Функциональная часть кнопки "Создать"*/
         binding.createButtonMain.setOnClickListener {
@@ -142,5 +141,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Функция для инициализации RecyclerView - списка записей*/
+    private fun initRecyclerView(){
+        binding.apply {
+            recyclerView.layoutManager = LinearLayoutManager(root.context)
+            recyclerView.adapter = rcAdapter
+            val statusImg = this@MainActivity.intent.getIntExtra("status_image", 0)
+            val recordName = this@MainActivity.intent.getStringExtra("name")
+            val dateNTime = this@MainActivity.intent.getStringExtra("dateNTime")
+            var location = this@MainActivity.intent.getStringExtra("location")
+            val adress = this@MainActivity.intent.getStringExtra("adress")
+            var yieldstr = this@MainActivity.intent.getStringExtra("yield")
 
+            if (yieldstr == null){
+                yieldstr=""
+            }
+            if (location.isNullOrEmpty()) {
+                location = adress
+            }
+            if ((statusImg != 0) and !(recordName.isNullOrEmpty()) and !(dateNTime.isNullOrEmpty()) and
+                !((adress.isNullOrEmpty()) and (location.isNullOrEmpty()))
+            ) {
+                var record = Record(statusImg, recordName.toString(), dateNTime.toString(), yieldstr.toString(), location.toString())
+                rcAdapter.addRecord(record)
+            }
+        }
+    }
 }

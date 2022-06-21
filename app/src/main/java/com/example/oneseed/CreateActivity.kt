@@ -109,10 +109,18 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
                     Toast.makeText(this, "Успешно добавлено!", Toast.LENGTH_SHORT).show()
 
-
+                    val toMainIntent = Intent(this, MainActivity::class.java)
+                    toMainIntent.putExtra("status_image",R.drawable.ic_watch)
+                    toMainIntent.putExtra("name", binding.nameEditText.text.toString())
+                    toMainIntent.putExtra("dateNTime",dateAndTimeTextView.text)
+                    toMainIntent.putExtra("location",binding.locationTextView.text)
+                    toMainIntent.putExtra("adress",binding.userOwnGps.text.toString())
+                    toMainIntent.putExtra("yield",binding.yieldResult.text)
 
                     myDbManager.closeDB()
-                    backMainApp()
+                    finishAndRemoveTask()
+                    Thread.sleep(50)
+                    startActivity(toMainIntent)
 
                 } catch (e: Exception) {
                 }
