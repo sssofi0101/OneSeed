@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oneseed.database.MyDbManager
+import com.example.oneseed.databinding.ActivityMainBinding
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
@@ -26,24 +27,25 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        val recyclerView: RecyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         /** Функциональная часть кнопки "Создать"*/
-        this.findViewById<Button>(R.id.create_button_main).setOnClickListener {
-
+        binding.createButtonMain.setOnClickListener {
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
 
         /** Функциональная часть кнопки "Рассчитать"*/
-        this.findViewById<Button>(R.id.calculate_button).setOnClickListener {
+        binding.calculateButton.setOnClickListener {
             try{
             if (isOnline(this)) {
                 getStorage()
