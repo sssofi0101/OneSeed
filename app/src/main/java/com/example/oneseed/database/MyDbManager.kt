@@ -38,6 +38,27 @@ class MyDbManager(context: Context) {
         cursor.close()
         return dataList
     }
+
+    @SuppressLint("Range")
+    fun readDBAllData(): ArrayList<ArrayList<String>>{
+        val dataList = ArrayList<ArrayList<String>>()
+        val dataArray = ArrayList<String>()
+        val cursor = db?.query(MyDbClass.TABLE_NAME, null, null,null,null,null,null)
+        while (cursor?.moveToNext()!!){
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_NAME)))
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_COORDINATES)))
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_PHOTO)))
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_VARIETIES)))
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_COMMENT)))
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_RESULT)))
+            dataArray.add(cursor.getString(cursor.getColumnIndex(MyDbClass.COLUMN_NAME_LOADED)))
+            dataList.add(dataArray)
+        }
+        cursor.close()
+        return dataList
+    }
+
+
     fun closeDB(){
         myDbHelper.close()
     }

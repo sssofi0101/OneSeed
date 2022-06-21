@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
     private val permissionStorage = 100
     private val username = "username"
     private lateinit var database: DatabaseReference
-    var currentId = "0"
-    var actualMaxId = "0"
+    var currentId = 0
+    var actualMaxId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         database = FirebaseDatabase.getInstance().reference
@@ -61,14 +61,14 @@ class MainActivity : AppCompatActivity() {
         //перенести код в функции
         this.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
 
-            database = FirebaseDatabase.getInstance().reference
+            /*database = FirebaseDatabase.getInstance().reference
             val globalarray: MutableList<Array<String>> = ArrayList()
 
             Thread.sleep(1000)
             database.child("users").child("username").child("maxId").get()
                 .addOnSuccessListener {
                     Log.i("firebase", "Got value ${it.value}")
-                    actualMaxId = it.value.toString()
+                    actualMaxId = it.value.toString().toInt()
                     Log.i("firebase1", "Got value $actualMaxId")
                 }.addOnFailureListener { Log.e("firebase", "Error getting data", it) }
 
@@ -81,12 +81,12 @@ class MainActivity : AppCompatActivity() {
                     .addOnSuccessListener {
 
                         string = it.value.toString()
-/*                        array[0] = string.substringAfter("comment=").substringBefore("}")
+*//*                        array[0] = string.substringAfter("comment=").substringBefore("}")
                         array[1] = string.substringAfter("coordinates=").substringBefore(",")
                         array[2] = string.substringAfter("name=").substringBefore(",")
                         array[3] = string.substringAfter("photo=").substringBefore(",")
                         array[4] = string.substringAfter("result=").substringBefore(",")
-                        array[5] = string.substringAfter("varieties=")*/
+                        array[5] = string.substringAfter("varieties=")*//*
                     }
                 globalarray.add(array)
                 currentId += 1
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                 Log.i("array", item[0])
 
             }
-
+*/
         }
 
         /** Функциональная часть кнопки "Рассчитать"*/
@@ -108,14 +108,26 @@ class MainActivity : AppCompatActivity() {
                     getStorage()
                     myDbManager.openDB()
                     var i = 0
-                    val dataList = myDbManager.readDBDataPhotoUriText()
-                    for (item in dataList) {
+                    val dataArray = myDbManager.readDBDataPhotoUriText()
+                    for (item in dataArray) {
                         val name = i.toString()
                         val refStorageRoot = FirebaseStorage.getInstance().reference
-                        val path = refStorageRoot.child(name)
+                        val path = refStorageRoot.child(username).child("$username$name")
                         val file = Uri.fromFile(File(item))
                         path.putFile(file)
                         i += 1
+                    }
+
+                    val dataList = myDbManager.readDBAllData()
+                    for (item in dataList) {
+                        database.child("users").child(username).child("$actualMaxId").child("name").setValue(item[0])
+                        database.child("users").child(username).child("$actualMaxId").child("coordinates").setValue(item[1])
+                        database.child("users").child(username).child("$actualMaxId").child("photo").setValue("$username$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxId").child("varieties").setValue(item[3])
+                        database.child("users").child(username).child("$actualMaxId").child("comment").setValue(item[4])
+                        database.child("users").child(username).child("$actualMaxId").child("result").setValue(item[5])
+                        database.child("users").child(username).child("maxId").setValue(actualMaxId)
+                        actualMaxId += 1
                     }
                     myDbManager.dropDB()
                     myDbManager.createDB()
@@ -127,8 +139,6 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(this, "Ошибка", Toast.LENGTH_SHORT).show()
             }
-            database.child("users").child(username).child("3").child("aaa").setValue("comment")
-            database.child("users").child(username).child("3").child("bbb").setValue("comment")
         }
 
     }
@@ -141,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         database.child("users").child(username).child(id).get().addOnSuccessListener {
 
             string = it.value.toString()
-            array[0] = string.substringAfter("comment=").substringBefore("}")
+            array[0] = string.substringAfter("comment=").substringBefore(",")
             array[1] = string.substringAfter("coordinates=").substringBefore(",")
             array[2] = string.substringAfter("name=").substringBefore(",")
             array[3] = string.substringAfter("photo=").substringBefore(",")
