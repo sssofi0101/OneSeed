@@ -181,7 +181,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         textView.setOnClickListener {
             try {
                 //Массив из координат, которые отображаются при определении
-                val strs = textView.text.toString().split(",").toTypedArray()
+                val strs = textView.text.toString().split(" ").toTypedArray()
                 val latitude = strs[0]
                 val longitude = strs[1]
 
@@ -349,7 +349,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         var long = location.longitude.toString()
         long = long.take(10)
         statusOfLocation.visibility = View.VISIBLE
-        tvGpsLocation.text = "$lant,$long"
+        tvGpsLocation.text = "$lant $long"
         locationManager.removeUpdates(this)
     }
 
