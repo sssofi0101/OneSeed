@@ -11,6 +11,7 @@ object MyDbClass {
     const val COLUMN_NAME_COMMENT = "comment"
     const val COLUMN_NAME_LOADED = "loaded"
     const val COLUMN_NAME_RESULT = "result"
+    const val COLUMN_NAME_DATETIME = "datetime"
 
     const val DATABASE_VERSION = 1
     const val DATABASE_NAME = "Request.db"
@@ -22,8 +23,9 @@ object MyDbClass {
             "$COLUMN_NAME_PHOTO TEXT,"+
             "$COLUMN_NAME_VARIETIES TEXT,"+
             "$COLUMN_NAME_COMMENT TEXT," +
-            "$COLUMN_NAME_LOADED INTEGER," +
-            "$COLUMN_NAME_RESULT REAL)"
+            "$COLUMN_NAME_LOADED TEXT," +
+            "$COLUMN_NAME_RESULT TEXT,"+
+            "$COLUMN_NAME_DATETIME TEXT)"
 
     const val DropTable = "DROP TABLE IF EXISTS $TABLE_NAME"
 }

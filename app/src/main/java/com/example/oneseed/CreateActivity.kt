@@ -27,8 +27,6 @@ import br.com.onimur.handlepathoz.HandlePathOz
 import br.com.onimur.handlepathoz.HandlePathOzListener.SingleUri
 import br.com.onimur.handlepathoz.model.PathOz
 import com.example.oneseed.database.MyDbManager
-import com.example.oneseed.databinding.ActivityCreateBinding
-import com.example.oneseed.databinding.ActivityMainBinding
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,34 +46,30 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
     private var photoAddress: Uri? = null
     private val locationPermissionCode = 2
 
-    private lateinit var binding: ActivityCreateBinding
-
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        binding = ActivityCreateBinding.inflate(layoutInflater)
-        var statusOfLocation = binding.statusOfLocationImageView
+        var statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
 
         handlePathOz = HandlePathOz(this, this)
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        image = binding.loadedPhoto
-        tvGpsLocation = binding.locationTextView
-        gpsUserOwn = binding.userOwnGps
+        setContentView(R.layout.activity_create)
+        image = findViewById(R.id.loaded_photo)
+        tvGpsLocation = findViewById(R.id.location_textView)
+        gpsUserOwn = findViewById(R.id.userOwnGps)
         image.setImageResource(0)
         setTime()
 
         /** Функциональная часть кнопки "назад"*/
-        val backButton = binding.returnToMainButton
+        val backButton = findViewById<Button>(R.id.return_to_main_button)
         backButton.setOnClickListener {
             backMainApp()
         }
 
         /** Функциональная часть кнопки "Добавить"*/
-        val addBtn = binding.addButton
+        val addBtn = findViewById<Button>(R.id.add_button)
         addBtn.setOnClickListener {
-            val loadPhotoStatus = binding.loadPhotoStatus
-            statusOfLocation = binding.statusOfLocationImageView
+            val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
+            statusOfLocation = findViewById(R.id.status_of_location_imageView)
             if (loadPhotoStatus.visibility == View.INVISIBLE
                 || statusOfLocation.visibility == View.INVISIBLE
             ) {
@@ -85,42 +79,36 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
                 try {
                     myDbManager.openDB()
 
-                    val commentEditText = binding.commentEditText
-                    val varietiesSpinner = binding.varietiesSpinner
-                    val nameEditText = binding.nameEditText
+                    val commentEditText = findViewById<EditText>(R.id.comment_editText)
+                    val varietiesSpinner = findViewById<Spinner>(R.id.varietiesSpinner)
+                    val nameEditText = findViewById<EditText>(R.id.name_editText)
                     if (gpsUserOwn.visibility == View.VISIBLE) {
                         myDbManager.insertToDB(nameEditText.text.toString(),
                             gpsUserOwn.text.toString(),
                             photoAddress.toString(),
                             varietiesSpinner.selectedItem.toString(),
                             commentEditText.text.toString(),
-                            0,
-                            0f)
+                            "0",
+                            "0",
+                            dateAndTimeTextView.text.toString())
                     } else {
                         myDbManager.insertToDB(nameEditText.text.toString(),
                             tvGpsLocation.text.toString(),
                             photoAddress.toString(),
                             varietiesSpinner.selectedItem.toString(),
                             commentEditText.text.toString(),
-                            0,
-                            0f)
+                            "0",
+                            "0",
+                            dateAndTimeTextView.text.toString())
                     }
 
 
                     Toast.makeText(this, "Успешно добавлено!", Toast.LENGTH_SHORT).show()
 
-                    val toMainIntent = Intent(this, MainActivity::class.java)
-                    toMainIntent.putExtra("status_image",R.drawable.ic_watch)
-                    toMainIntent.putExtra("name", binding.nameEditText.text.toString())
-                    toMainIntent.putExtra("dateNTime",dateAndTimeTextView.text)
-                    toMainIntent.putExtra("location",binding.locationTextView.text)
-                    toMainIntent.putExtra("adress",binding.userOwnGps.text.toString())
-                    toMainIntent.putExtra("yield",binding.yieldResult.text)
+
 
                     myDbManager.closeDB()
-                    finishAndRemoveTask()
-                    Thread.sleep(50)
-                    startActivity(toMainIntent)
+                    backMainApp()
 
                 } catch (e: Exception) {
                 }
@@ -142,7 +130,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
 
         /** Функциональная часть кнопки "прикрепить местоположение"*/
-        val findGpsBtn: Button = binding.pinLocationButton
+        val findGpsBtn: Button = findViewById(R.id.pin_location_button)
         findGpsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setPositiveButton("Автоматически") { _, _ ->
@@ -154,7 +142,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
             builder.setNeutralButton("Вручную") { _, _ ->
                 gpsUserOwn.visibility = View.VISIBLE
                 tvGpsLocation.visibility = View.GONE
-                statusOfLocation = binding.statusOfLocationImageView
+                statusOfLocation = findViewById(R.id.status_of_location_imageView)
                 statusOfLocation.visibility = View.INVISIBLE
             }
             val alertDialog = builder.create()
@@ -172,7 +160,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
         }
 
-        val spinner: Spinner = binding.varietiesSpinner
+        val spinner: Spinner = findViewById(R.id.varietiesSpinner)
         ArrayAdapter.createFromResource(
             this,
             R.array.Varieties,
@@ -184,18 +172,18 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
 
         /** Функциональная часть кнопки "Выбрать фотографию"*/
-        val openPhotoBtn: Button = binding.loadPhotoButton
+        val openPhotoBtn: Button = findViewById(R.id.load_photo_button)
         openPhotoBtn.setOnClickListener {
             pickImageGallery()
         }
 
 
         /**Открытие карт с полученными координатами при нажатии на эти координаты*/
-        val textView: TextView = binding.locationTextView
+        val textView: TextView = findViewById(R.id.location_textView)
         textView.setOnClickListener {
             try {
                 //Массив из координат, которые отображаются при определении
-                val strs = textView.text.toString().split(",").toTypedArray()
+                val strs = textView.text.toString().split(" ").toTypedArray()
                 val latitude = strs[0]
                 val longitude = strs[1]
 
@@ -264,7 +252,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
                 if (data != null) {
                     if (data.data != null) {
                         photoAddress = data.data!!
-                        val loadPhotoStatus = binding.loadPhotoStatus
+                        val loadPhotoStatus = findViewById<ImageView>(R.id.load_photo_status)
                         loadPhotoStatus.visibility = View.VISIBLE
 
                     }
@@ -279,7 +267,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
      * */
     @SuppressLint("SetTextI18n")
     private fun setTime() {
-        dateAndTimeTextView = binding.dateAndTimeTextView
+        dateAndTimeTextView = findViewById(R.id.dateAndTimeTextView)
         val currentDate = Date()
         val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val dateText: String = dateFormat.format(currentDate)
@@ -291,7 +279,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
 
     /**Функция для определения геопозиции пользователя*/
     private fun getLocation() {
-        tvGpsLocation = binding.locationTextView
+        tvGpsLocation = findViewById(R.id.location_textView)
         try {
             locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if ((ContextCompat.checkSelfPermission(this,
@@ -306,7 +294,7 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
         } catch (e: Exception) {
             gpsPermissionWrongAlert()
             tvGpsLocation.text = "Ошибка определния местоположения"
-            val statusOfLocation = binding.statusOfLocationImageView
+            val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
             statusOfLocation.visibility = View.INVISIBLE
         }
     }
@@ -356,14 +344,14 @@ class CreateActivity : AppCompatActivity(), LocationListener, SingleUri {
      * */
     @SuppressLint("SetTextI18n")
     override fun onLocationChanged(location: Location) {
-        val statusOfLocation = binding.statusOfLocationImageView
-        tvGpsLocation = binding.locationTextView
+        val statusOfLocation = findViewById<ImageView>(R.id.status_of_location_imageView)
+        tvGpsLocation = findViewById(R.id.location_textView)
         var lant = location.latitude.toString()
         lant = lant.take(10)
         var long = location.longitude.toString()
         long = long.take(10)
         statusOfLocation.visibility = View.VISIBLE
-        tvGpsLocation.text = "$lant,$long"
+        tvGpsLocation.text = "$lant $long"
         locationManager.removeUpdates(this)
     }
 
