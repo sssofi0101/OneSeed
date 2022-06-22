@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
     private val username = "username"
+    private val arrayValues: ArrayList<Int> = arrayListOf(0,1,2,3,4,5,6,7)
     private lateinit var database: DatabaseReference
     private var currentId = 0
     var actualMaxId = 0
@@ -95,37 +96,41 @@ class MainActivity : AppCompatActivity() {
                 if (isOnline(this)) {
                     getStorage()
                     myDbManager.openDB()
-                    var actualMaxIdcopy = actualMaxId + 1
-                    val dataArray = myDbManager.readDBDataPhotoUriText()
+                    var actualMaxIdcopy = actualMaxId
+                    val dataArray = myDbManager.readDBAllData()
+                    var count = 0
                     for (item in dataArray) {
                         actualMaxIdcopy += 1
                         val refStorageRoot = FirebaseStorage.getInstance().reference
                         val path =
                             refStorageRoot.child(username).child("$username$actualMaxIdcopy")
-                        val file = Uri.fromFile(File(item))
+                        val file = Uri.fromFile(File(item[arrayValues[2]+count]))
                         path.putFile(file)
+                        count += 8
                     }
                     actualMaxIdcopy = actualMaxId + 1
                     //Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
                     val dataList = myDbManager.readDBAllData()
+                    count = 0
                     for (item in dataList) {
                         database.child("users").child(username).child("$actualMaxIdcopy")
-                            .child("name").setValue(item[0])
+                            .child("name").setValue(item[arrayValues[0]+count])
                         database.child("users").child(username).child("$actualMaxIdcopy")
-                            .child("coordinates").setValue(item[1])
+                            .child("coordinates").setValue(item[arrayValues[1]+count])
                         database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("photo").setValue("$username$actualMaxIdcopy")
                         database.child("users").child(username).child("$actualMaxIdcopy")
-                            .child("varieties").setValue(item[3])
+                            .child("varieties").setValue(item[arrayValues[3]+count])
                         database.child("users").child(username).child("$actualMaxIdcopy")
-                            .child("comment").setValue(item[4])
+                            .child("comment").setValue(item[arrayValues[4]+count])
                         database.child("users").child(username).child("$actualMaxIdcopy")
-                            .child("result").setValue(item[5])
+                            .child("result").setValue(item[arrayValues[5]+count])
                         database.child("users").child(username).child("$actualMaxIdcopy")
-                            .child("datetime").setValue(item[6])
+                            .child("datetime").setValue(item[arrayValues[6]+count])
                         database.child("users").child(username).child("maxId")
                             .setValue(actualMaxIdcopy)
                         actualMaxIdcopy += 1
+                        count += 8
                     }
                     myDbManager.dropDB()
                     myDbManager.createDB()
@@ -144,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     private fun getMaxId(dRef: DatabaseReference) {
         dRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                actualMaxId= snapshot.value.toString().toInt()
+                actualMaxId = snapshot.value.toString().toInt()
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -282,22 +287,26 @@ class MainActivity : AppCompatActivity() {
                 myDbManager.openDB()
                 val dataList = myDbManager.readDBAllData()
                 var recordNameValue = 0
-                var dateNTimeValue = 0
-                var locationValue = 0
-                var resultValue = 0
-
+                var dateNTimeValue = 6
+                var locationValue = 1
+                var resultValue = 5
+                var count = 0
+                val len = dataList.size
                 for (itemDb in dataList) {
-                    val statusImg = R.drawable.ic_watch
-                    val recordName = itemDb[recordNameValue]
-                    val dateNTime = itemDb[dateNTimeValue]
-                    val location = itemDb[locationValue]
-                    val result = itemDb[resultValue]
-                    val record = Record(statusImg, recordName, dateNTime, result, location)
-                    rcAdapter.addRecord(record)
-                    recordNameValue += 8
-                    dateNTimeValue += 8
-                    locationValue += 8
-                    resultValue += 8
+                    if (count < len){
+                        val statusImg = R.drawable.ic_watch
+                        val recordName = itemDb[recordNameValue]
+                        val dateNTime = itemDb[dateNTimeValue]
+                        val location = itemDb[locationValue]
+                        val result = itemDb[resultValue]
+                        val record = Record(statusImg, recordName, dateNTime, result, location)
+                        rcAdapter.addRecord(record)
+                        recordNameValue += 8
+                        dateNTimeValue += 8
+                        locationValue += 8
+                        resultValue += 8
+                        count += 1
+                    }
                 }
             }
             catch (e: Exception) { }
