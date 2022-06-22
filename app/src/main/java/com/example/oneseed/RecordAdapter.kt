@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oneseed.databinding.RecordsItemBinding
 
@@ -38,5 +39,9 @@ class RecordAdapter:RecyclerView.Adapter<RecordAdapter.RecordHolder>() {
     fun addRecord(record: Record){
         recordsList.add(record)
         notifyDataSetChanged()
+    }
+
+    fun clearRecords(){
+        recordsList.removeAll(recordsList)
     }
 }

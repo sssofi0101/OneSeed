@@ -29,6 +29,7 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private var rcAdapter = RecordAdapter()
 
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
@@ -76,7 +77,8 @@ class MainActivity : AppCompatActivity() {
             getValues(myRefer)*/
 
             initRecyclerView()
-
+            recyclerView.adapter = rcAdapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
         }
 
         /** Функциональная часть кнопки "Рассчитать"*/
@@ -246,9 +248,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView(){
         binding.apply {
-            val rcAdapter = RecordAdapter()
-            recyclerView.layoutManager = LinearLayoutManager(root.context)
-            recyclerView.adapter = rcAdapter
+         //   rcAdapter.clearRecords()
+
             var count = 0
             for (item in allArraysSplit){
                 val statusImg = R.drawable.ic_watch
@@ -259,8 +260,12 @@ class MainActivity : AppCompatActivity() {
                 val record = Record(statusImg, recordName, dateNTime, result, location)
                 rcAdapter.addRecord(record)
                 count += 1
+
+
             }
-            }
+
+        }
+
         }
 
 
