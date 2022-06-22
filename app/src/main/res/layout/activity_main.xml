@@ -8,145 +8,142 @@
     android:paddingRight="16dp"
     android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            <Button
+                android:id="@+id/menu_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:text="@string/menu_button"
+                android:textAllCaps="false"
+                android:textColor="@color/green_light_text"
+                android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/menu_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:text="@string/menu_button"
-                    android:textAllCaps="false"
-                    android:textColor="@color/green_light_text"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/notes_header_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter"
-                    android:lineSpacingExtra="8sp"
-                    android:text="@string/notes_title"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/create_button_main"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:text="@string/create"
-                    android:textAllCaps="false"
-                    android:textColor="@color/green_light_text"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <SearchView
-                style="@android:style/Widget.Material.SearchView"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/notes_header_textView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/light_grey"
-                android:backgroundTint="@color/light_grey"
-                android:queryHint="Поиск"
-                android:visibility="visible">
+                android:fontFamily="@font/inter"
+                android:lineSpacingExtra="8sp"
+                android:text="@string/notes_title"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-            </SearchView>
+            <Button
+                android:id="@+id/create_button_main"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:text="@string/create"
+                android:textAllCaps="false"
+                android:textColor="@color/green_light_text"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <SearchView
+            style="@android:style/Widget.Material.SearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/light_grey"
+            android:backgroundTint="@color/light_grey"
+            android:queryHint="Поиск"
+            android:visibility="visible">
+
+        </SearchView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/on_queue_filter_button"
+                android:layout_width="113dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/yellow_buttons"
+                android:fontFamily="@font/inter"
+                android:text="@string/on_queue_filter"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:cornerRadius="100dp" />
+
+            <Button
+                android:id="@+id/finished_filter_button"
+                android:layout_width="113dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green_buttons"
+                android:fontFamily="@font/inter"
+                android:text="@string/finished_filter"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:cornerRadius="100dp" />
+
+            <Button
+                android:id="@+id/error_filter_button"
+                android:layout_width="113dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/red_buttons"
+                android:fontFamily="@font/inter"
+                android:text="@string/error_filter"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:cornerRadius="100dp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/records_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal">
-
-
-                <Button
-                    android:id="@+id/on_queue_filter_button"
-                    android:layout_width="113dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/yellow_buttons"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/on_queue_filter"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:cornerRadius="100dp" />
-
-                <Button
-                    android:id="@+id/finished_filter_button"
-                    android:layout_width="113dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="3dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/green_buttons"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/finished_filter"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:cornerRadius="100dp" />
-
-                <Button
-                    android:id="@+id/error_filter_button"
-                    android:layout_width="113dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="3dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/red_buttons"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/error_filter"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:cornerRadius="100dp" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="514dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/records_item">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <Button
                     android:id="@+id/calculate_button"
@@ -177,9 +174,12 @@
                     android:minHeight="48dp"
                     app:srcCompat="@drawable/ic_update" />
             </LinearLayout>
-        </LinearLayout>
 
-    </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
 
 
 

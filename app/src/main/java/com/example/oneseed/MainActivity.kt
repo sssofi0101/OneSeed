@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             val myRefer = db.getReference("users").child("username")
             getValues(myRefer)*/
             rcAdapter.recordsList = ArrayList<Record>()
+            rcAdapter.notifyDataSetChanged()
             recyclerView.adapter = rcAdapter
             initRecyclerView()
             recyclerView.adapter = rcAdapter
