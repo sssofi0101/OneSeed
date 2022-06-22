@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
     private lateinit var binding: ActivityMainBinding
-    val rcAdapter = RecordAdapter()
+    var rcAdapter = RecordAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -145,7 +145,6 @@ class MainActivity : AppCompatActivity() {
     private fun initRecyclerView(){
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(root.context)
-            recyclerView.adapter = rcAdapter
             val statusImg = this@MainActivity.intent.getIntExtra("status_image", 0)
             val recordName = this@MainActivity.intent.getStringExtra("name")
             val dateNTime = this@MainActivity.intent.getStringExtra("dateNTime")
@@ -165,6 +164,7 @@ class MainActivity : AppCompatActivity() {
                 var record = Record(statusImg, recordName.toString(), dateNTime.toString(), yieldstr.toString(), location.toString())
                 rcAdapter.addRecord(record)
             }
+            recyclerView.adapter = rcAdapter
         }
     }
 }
