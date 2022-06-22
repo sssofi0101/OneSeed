@@ -27,9 +27,6 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
 
-data class User(val username: String? = null, val email: String? = null) {}
-
-
 class MainActivity : AppCompatActivity() {
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         //перенести код в функции
         this.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
-
+            getMaxId()
             /*database = FirebaseDatabase.getInstance().reference
             val globalarray: MutableList<Array<String>> = ArrayList()
 
@@ -102,37 +99,48 @@ class MainActivity : AppCompatActivity() {
         /** Функциональная часть кнопки "Рассчитать"*/
         this.findViewById<Button>(R.id.calculate_button).setOnClickListener {
             database = FirebaseDatabase.getInstance().reference
-
             try {
                 if (isOnline(this)) {
-                    getStorage()
-                    myDbManager.openDB()
-                    var i = 0
-                    val dataArray = myDbManager.readDBDataPhotoUriText()
-                    for (item in dataArray) {
-                        val name = i.toString()
-                        val refStorageRoot = FirebaseStorage.getInstance().reference
-                        val path = refStorageRoot.child(username).child("$username$name")
-                        val file = Uri.fromFile(File(item))
-                        path.putFile(file)
-                        i += 1
-                    }
+                    database.child("users").child("username").child("maxId").get()
+                        .addOnSuccessListener {
+                            actualMaxId = it.value.toString().toInt()
+                            getStorage()
+                            myDbManager.openDB()
+                            val dataArray = myDbManager.readDBDataPhotoUriText()
+                            for (item in dataArray) {
+                                actualMaxId += 1
+                                val refStorageRoot = FirebaseStorage.getInstance().reference
+                                val path = refStorageRoot.child(username).child("$username$actualMaxId")
+                                val file = Uri.fromFile(File(item))
+                                path.putFile(file)
+                            }
+                            Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
+                            val dataList = myDbManager.readDBAllData()
+                            for (item in dataList) {
+                                database.child("users").child(username).child("$actualMaxId")
+                                    .child("name").setValue(item[0])
+                                database.child("users").child(username).child("$actualMaxId")
+                                    .child("coordinates").setValue(item[1])
+                                database.child("users").child(username).child("$actualMaxId")
+                                    .child("photo").setValue("$username$actualMaxId")
+                                database.child("users").child(username).child("$actualMaxId")
+                                    .child("varieties").setValue(item[3])
+                                database.child("users").child(username).child("$actualMaxId")
+                                    .child("comment").setValue(item[4])
+                                database.child("users").child(username).child("$actualMaxId")
+                                    .child("result").setValue(item[5])
+                                database.child("users").child(username).child("maxId")
+                                    .setValue(actualMaxId)
+                            }
+                            myDbManager.dropDB()
+                            myDbManager.createDB()
 
-                    val dataList = myDbManager.readDBAllData()
-                    for (item in dataList) {
-                        database.child("users").child(username).child("$actualMaxId").child("name").setValue(item[0])
-                        database.child("users").child(username).child("$actualMaxId").child("coordinates").setValue(item[1])
-                        database.child("users").child(username).child("$actualMaxId").child("photo").setValue("$username$actualMaxId")
-                        database.child("users").child(username).child("$actualMaxId").child("varieties").setValue(item[3])
-                        database.child("users").child(username).child("$actualMaxId").child("comment").setValue(item[4])
-                        database.child("users").child(username).child("$actualMaxId").child("result").setValue(item[5])
-                        database.child("users").child(username).child("maxId").setValue(actualMaxId)
-                        actualMaxId += 1
-                    }
-                    myDbManager.dropDB()
-                    myDbManager.createDB()
+                            myDbManager.closeDB()
 
-                    myDbManager.closeDB()
+
+                        }.addOnFailureListener {
+                        Log.e("firebase", "Error getting data", it)
+                    }
                 } else {
                     Toast.makeText(this, "Ошибка. Нет интернета!", Toast.LENGTH_SHORT).show()
                 }
@@ -145,10 +153,10 @@ class MainActivity : AppCompatActivity() {
 
 
     //будет использоваться в дальнейшем когда будет решён баг с недостаточным времем для получения результата
-    private fun getValues(username: String, id: String): Array<String> {
+    private fun getValues(username: String, id: Int): Array<String> {
         val array = arrayOf("", "", "", "", "", "")
         var string: String
-        database.child("users").child(username).child(id).get().addOnSuccessListener {
+        database.child("users").child(username).child("$id").get().addOnSuccessListener {
 
             string = it.value.toString()
             array[0] = string.substringAfter("comment=").substringBefore(",")
@@ -165,15 +173,15 @@ class MainActivity : AppCompatActivity() {
 
 
     //будет использоваться в дальнейшем когда будет решён баг с недостаточным времем для получения результата
-    private fun getMaxId(): String {
-        var maxId: String = "0"
+    private fun getMaxId(): Int {
+        database = FirebaseDatabase.getInstance().reference
         database.child("users").child("username").child("maxId").get().addOnSuccessListener {
-            maxId = it.value.toString()
-            Log.e("firebase", maxId)
+            actualMaxId = it.value.toString().toInt()
+            Log.i("firebase", "$actualMaxId")
         }.addOnFailureListener {
             Log.e("firebase", "Error getting data", it)
         }
-        return maxId
+        return actualMaxId
     }
 
 
