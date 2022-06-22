@@ -75,7 +75,8 @@ class MainActivity : AppCompatActivity() {
             actualMaxId = 0
             val myRefer = db.getReference("users").child("username")
             getValues(myRefer)*/
-
+            rcAdapter.recordsList = ArrayList<Record>()
+            recyclerView.adapter = rcAdapter
             initRecyclerView()
             recyclerView.adapter = rcAdapter
             recyclerView.layoutManager = LinearLayoutManager(this)
