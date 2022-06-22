@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         getValues(myRefer)
         //Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
 
-
+        //initRecyclerView()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -67,20 +67,25 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
+        rcAdapter.recordsList = ArrayList()
+        rcAdapter.notifyDataSetChanged()
+        recyclerView.adapter = rcAdapter
+        addAllDb()
+        recyclerView.adapter = rcAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        //перенести код в функции
+
         this.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
-   /*         allArraysSplit = arrayListOf()
-            currentId = 0
-            actualMaxId = 0
-            val myRefer = db.getReference("users").child("username")
-            getValues(myRefer)*/
-            rcAdapter.recordsList = ArrayList<Record>()
+            rcAdapter.recordsList = ArrayList()
             rcAdapter.notifyDataSetChanged()
             recyclerView.adapter = rcAdapter
             initRecyclerView()
             recyclerView.adapter = rcAdapter
             recyclerView.layoutManager = LinearLayoutManager(this)
+            allArraysSplit = arrayListOf()
+            getValues(myRefer)
+            Thread.sleep(100)
+
         }
 
         /** Функциональная часть кнопки "Рассчитать"*/
@@ -90,34 +95,37 @@ class MainActivity : AppCompatActivity() {
                 if (isOnline(this)) {
                     getStorage()
                     myDbManager.openDB()
+                    var actualMaxIdcopy = actualMaxId + 1
                     val dataArray = myDbManager.readDBDataPhotoUriText()
                     for (item in dataArray) {
-                        actualMaxId += 1
+                        actualMaxIdcopy += 1
                         val refStorageRoot = FirebaseStorage.getInstance().reference
                         val path =
-                            refStorageRoot.child(username).child("$username$actualMaxId")
+                            refStorageRoot.child(username).child("$username$actualMaxIdcopy")
                         val file = Uri.fromFile(File(item))
                         path.putFile(file)
                     }
+                    actualMaxIdcopy = actualMaxId + 1
                     //Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
                     val dataList = myDbManager.readDBAllData()
                     for (item in dataList) {
-                        database.child("users").child(username).child("$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("name").setValue(item[0])
-                        database.child("users").child(username).child("$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("coordinates").setValue(item[1])
-                        database.child("users").child(username).child("$actualMaxId")
-                            .child("photo").setValue("$username$actualMaxId")
-                        database.child("users").child(username).child("$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
+                            .child("photo").setValue("$username$actualMaxIdcopy")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("varieties").setValue(item[3])
-                        database.child("users").child(username).child("$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("comment").setValue(item[4])
-                        database.child("users").child(username).child("$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("result").setValue(item[5])
-                        database.child("users").child(username).child("$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxIdcopy")
                             .child("datetime").setValue(item[6])
                         database.child("users").child(username).child("maxId")
-                            .setValue(actualMaxId)
+                            .setValue(actualMaxIdcopy)
+                        actualMaxIdcopy += 1
                     }
                     myDbManager.dropDB()
                     myDbManager.createDB()
@@ -136,7 +144,7 @@ class MainActivity : AppCompatActivity() {
     private fun getMaxId(dRef: DatabaseReference) {
         dRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                actualMaxId = snapshot.value.toString().toInt()
+                actualMaxId= snapshot.value.toString().toInt()
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -146,6 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     //будет использоваться в дальнейшем когда будет решён баг с недостаточным времем для получения результата
     private fun getValues(dRef: DatabaseReference) {
+        allArraysSplit = arrayListOf()
         var i = 0
         dRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -248,12 +257,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         binding.apply {
-         //   rcAdapter.clearRecords()
-
+            //   rcAdapter.clearRecords()
+            addAllDb()
             var count = 0
-            for (item in allArraysSplit){
+            for (item in allArraysSplit) {
                 val statusImg = R.drawable.ic_watch
                 val recordName = allArraysSplit[count][4]
                 val dateNTime = allArraysSplit[count][6]
@@ -262,11 +271,37 @@ class MainActivity : AppCompatActivity() {
                 val record = Record(statusImg, recordName, dateNTime, result, location)
                 rcAdapter.addRecord(record)
                 count += 1
-
-
             }
 
         }
+    }
+        private fun addAllDb(){
+
+            try {
+                database = FirebaseDatabase.getInstance().reference
+                myDbManager.openDB()
+                val dataList = myDbManager.readDBAllData()
+                var recordNameValue = 0
+                var dateNTimeValue = 0
+                var locationValue = 0
+                var resultValue = 0
+
+                for (itemDb in dataList) {
+                    val statusImg = R.drawable.ic_watch
+                    val recordName = itemDb[recordNameValue]
+                    val dateNTime = itemDb[dateNTimeValue]
+                    val location = itemDb[locationValue]
+                    val result = itemDb[resultValue]
+                    val record = Record(statusImg, recordName, dateNTime, result, location)
+                    rcAdapter.addRecord(record)
+                    recordNameValue += 8
+                    dateNTimeValue += 8
+                    locationValue += 8
+                    resultValue += 8
+                }
+            }
+            catch (e: Exception) { }
+            myDbManager.closeDB()
 
         }
 
