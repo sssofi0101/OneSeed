@@ -30,7 +30,6 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    val rcAdapter = RecordAdapter()
     private val myDbManager = MyDbManager(this)
     private val permissionStorage = 100
     private val username = "username"
@@ -247,16 +246,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView(){
         binding.apply {
+            val rcAdapter = RecordAdapter()
             recyclerView.layoutManager = LinearLayoutManager(root.context)
             recyclerView.adapter = rcAdapter
+            var count = 0
             for (item in allArraysSplit){
-                val statusImg = this@MainActivity.intent.getIntExtra("status_image", 0)
-                val recordName = allArraysSplit[0][4]
-                val dateNTime = allArraysSplit[0][6]
-                val location = allArraysSplit[0][3]
-                val result = allArraysSplit[0][1]
+                val statusImg = R.drawable.ic_watch
+                val recordName = allArraysSplit[count][4]
+                val dateNTime = allArraysSplit[count][6]
+                val location = allArraysSplit[count][3]
+                val result = allArraysSplit[count][1]
                 val record = Record(statusImg, recordName, dateNTime, result, location)
                 rcAdapter.addRecord(record)
+                count += 1
             }
             }
         }

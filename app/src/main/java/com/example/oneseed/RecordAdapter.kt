@@ -1,5 +1,6 @@
 package com.example.oneseed
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class RecordAdapter:RecyclerView.Adapter<RecordAdapter.RecordHolder>() {
         return recordsList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addRecord(record: Record){
         recordsList.add(record)
         notifyDataSetChanged()
