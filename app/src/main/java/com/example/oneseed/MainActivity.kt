@@ -21,8 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oneseed.database.MyDbManager
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
@@ -32,14 +31,17 @@ class MainActivity : AppCompatActivity() {
     private val permissionStorage = 100
     private val username = "username"
     private lateinit var database: DatabaseReference
-    var currentId = 0
+    private var currentId = 0
     var actualMaxId = 0
+    private var allArraysSplit: ArrayList<ArrayList<String>> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         database = FirebaseDatabase.getInstance().reference
 
-
-
+        val db = FirebaseDatabase.getInstance().reference.database
+        val myRef = db.getReference("users").child("username").child("maxId")
+        getMaxId(myRef)
+        //Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
 
 
         super.onCreate(savedInstanceState)
@@ -57,43 +59,8 @@ class MainActivity : AppCompatActivity() {
 
         //перенести код в функции
         this.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
-            getMaxId()
-            /*database = FirebaseDatabase.getInstance().reference
-            val globalarray: MutableList<Array<String>> = ArrayList()
-
-            Thread.sleep(1000)
-            database.child("users").child("username").child("maxId").get()
-                .addOnSuccessListener {
-                    Log.i("firebase", "Got value ${it.value}")
-                    actualMaxId = it.value.toString().toInt()
-                    Log.i("firebase1", "Got value $actualMaxId")
-                }.addOnFailureListener { Log.e("firebase", "Error getting data", it) }
-
-
-
-            while (currentId <= actualMaxId) {
-                val array = arrayOf("", "", "", "", "", "")
-                var string: String
-                database.child("users").child(username).child("0").get()
-                    .addOnSuccessListener {
-
-                        string = it.value.toString()
-*//*                        array[0] = string.substringAfter("comment=").substringBefore("}")
-                        array[1] = string.substringAfter("coordinates=").substringBefore(",")
-                        array[2] = string.substringAfter("name=").substringBefore(",")
-                        array[3] = string.substringAfter("photo=").substringBefore(",")
-                        array[4] = string.substringAfter("result=").substringBefore(",")
-                        array[5] = string.substringAfter("varieties=")*//*
-                    }
-                globalarray.add(array)
-                currentId += 1
-            }
-
-            for (item in globalarray) {
-                Log.i("array", item[0])
-
-            }
-*/
+            val myRefer = db.getReference("users").child("username")
+            getValues(myRefer)
         }
 
         /** Функциональная часть кнопки "Рассчитать"*/
@@ -101,46 +68,39 @@ class MainActivity : AppCompatActivity() {
             database = FirebaseDatabase.getInstance().reference
             try {
                 if (isOnline(this)) {
-                    database.child("users").child("username").child("maxId").get()
-                        .addOnSuccessListener {
-                            actualMaxId = it.value.toString().toInt()
-                            getStorage()
-                            myDbManager.openDB()
-                            val dataArray = myDbManager.readDBDataPhotoUriText()
-                            for (item in dataArray) {
-                                actualMaxId += 1
-                                val refStorageRoot = FirebaseStorage.getInstance().reference
-                                val path = refStorageRoot.child(username).child("$username$actualMaxId")
-                                val file = Uri.fromFile(File(item))
-                                path.putFile(file)
-                            }
-                            Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
-                            val dataList = myDbManager.readDBAllData()
-                            for (item in dataList) {
-                                database.child("users").child(username).child("$actualMaxId")
-                                    .child("name").setValue(item[0])
-                                database.child("users").child(username).child("$actualMaxId")
-                                    .child("coordinates").setValue(item[1])
-                                database.child("users").child(username).child("$actualMaxId")
-                                    .child("photo").setValue("$username$actualMaxId")
-                                database.child("users").child(username).child("$actualMaxId")
-                                    .child("varieties").setValue(item[3])
-                                database.child("users").child(username).child("$actualMaxId")
-                                    .child("comment").setValue(item[4])
-                                database.child("users").child(username).child("$actualMaxId")
-                                    .child("result").setValue(item[5])
-                                database.child("users").child(username).child("maxId")
-                                    .setValue(actualMaxId)
-                            }
-                            myDbManager.dropDB()
-                            myDbManager.createDB()
-
-                            myDbManager.closeDB()
-
-
-                        }.addOnFailureListener {
-                        Log.e("firebase", "Error getting data", it)
+                    getStorage()
+                    myDbManager.openDB()
+                    val dataArray = myDbManager.readDBDataPhotoUriText()
+                    for (item in dataArray) {
+                        actualMaxId += 1
+                        val refStorageRoot = FirebaseStorage.getInstance().reference
+                        val path =
+                            refStorageRoot.child(username).child("$username$actualMaxId")
+                        val file = Uri.fromFile(File(item))
+                        path.putFile(file)
                     }
+                    Toast.makeText(this, "$actualMaxId", Toast.LENGTH_SHORT).show()
+                    val dataList = myDbManager.readDBAllData()
+                    for (item in dataList) {
+                        database.child("users").child(username).child("$actualMaxId")
+                            .child("name").setValue(item[0])
+                        database.child("users").child(username).child("$actualMaxId")
+                            .child("coordinates").setValue(item[1])
+                        database.child("users").child(username).child("$actualMaxId")
+                            .child("photo").setValue("$username$actualMaxId")
+                        database.child("users").child(username).child("$actualMaxId")
+                            .child("varieties").setValue(item[3])
+                        database.child("users").child(username).child("$actualMaxId")
+                            .child("comment").setValue(item[4])
+                        database.child("users").child(username).child("$actualMaxId")
+                            .child("result").setValue(item[5])
+                        database.child("users").child(username).child("maxId")
+                            .setValue(actualMaxId)
+                    }
+                    myDbManager.dropDB()
+                    myDbManager.createDB()
+
+                    myDbManager.closeDB()
                 } else {
                     Toast.makeText(this, "Ошибка. Нет интернета!", Toast.LENGTH_SHORT).show()
                 }
@@ -151,37 +111,49 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun getMaxId(dRef: DatabaseReference) {
+        dRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                actualMaxId = snapshot.value.toString().toInt()
+            }
 
-    //будет использоваться в дальнейшем когда будет решён баг с недостаточным времем для получения результата
-    private fun getValues(username: String, id: Int): Array<String> {
-        val array = arrayOf("", "", "", "", "", "")
-        var string: String
-        database.child("users").child(username).child("$id").get().addOnSuccessListener {
-
-            string = it.value.toString()
-            array[0] = string.substringAfter("comment=").substringBefore(",")
-            array[1] = string.substringAfter("coordinates=").substringBefore(",")
-            array[2] = string.substringAfter("name=").substringBefore(",")
-            array[3] = string.substringAfter("photo=").substringBefore(",")
-            array[4] = string.substringAfter("result=").substringBefore(",")
-            array[5] = string.substringAfter("varieties=")
-        }.addOnFailureListener {
-            Log.e("firebase", "Error getting data", it)
-        }
-        return array
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
 
     //будет использоваться в дальнейшем когда будет решён баг с недостаточным времем для получения результата
-    private fun getMaxId(): Int {
-        database = FirebaseDatabase.getInstance().reference
-        database.child("users").child("username").child("maxId").get().addOnSuccessListener {
-            actualMaxId = it.value.toString().toInt()
-            Log.i("firebase", "$actualMaxId")
-        }.addOnFailureListener {
-            Log.e("firebase", "Error getting data", it)
-        }
-        return actualMaxId
+    private fun getValues(dRef: DatabaseReference) {
+        var i = 0
+        dRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (h in snapshot.children) {
+                        if (i < actualMaxId) {
+                            allArraysSplit.add(splitResults(h.value.toString()))
+                            Log.d("Data", "$allArraysSplit")
+                            i += 1
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
+    }
+
+    private fun splitResults(value: String): ArrayList<String> {
+        val array = arrayListOf("", "", "", "", "", "", "")
+        array[0] = currentId.toString()
+        array[1] = value.substringAfter("result=").substringBefore(",")
+        array[2] = value.substringAfter("varieties=").substringBefore(",")
+        array[3] = value.substringAfter("coordinates=").substringBefore(",")
+        array[4] = value.substringAfter("name=").substringBefore(",")
+        array[5] = value.substringAfter("photo=").substringBefore(",")
+        array[6] = value.substringAfter("comment=")
+        currentId += 1
+        return array
     }
 
 
