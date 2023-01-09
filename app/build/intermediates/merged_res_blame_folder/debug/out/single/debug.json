@@ -1,0 +1,154 @@
+[
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_extralight.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_extralight.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_tick.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\ic_tick.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_extrabold.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_extrabold.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_create.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\layout\\activity_create.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_thin.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_thin.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_approve.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\ic_approve.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-xxxhdpi_ic_update.png.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxxhdpi\\ic_update.png"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-anydpi-v24_ic_update.xml.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-anydpi-v24\\ic_update.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_medium.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_medium.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-mdpi_ic_update.png.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_update.png"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_cross.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\ic_cross.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_bold.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_bold.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-xhdpi_ic_update.png.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-xhdpi\\ic_update.png"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_black.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_black.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_yellow_round_button.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\yellow_round_button.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_help.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\ic_help.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\font_inter_semibold.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\font\\inter_semibold.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-anydpi-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-anydpi-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-hdpi_ic_update.png.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-hdpi\\ic_update.png"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\layout_records_item.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\layout\\records_item.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable_ic_watch.xml.flat",
+        "source": "C:\\OneSeed\\app\\src\\main\\res\\drawable\\ic_watch.xml"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-ldpi_ic_update.png.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-ldpi\\ic_update.png"
+    },
+    {
+        "merged": "C:\\OneSeed\\app\\build\\intermediates\\merged_res\\debug\\drawable-xxhdpi_ic_update.png.flat",
+        "source": "C:\\OneSeed\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_update.png"
+    }
+]
